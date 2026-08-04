@@ -53,12 +53,12 @@ CoachingByManav/
 ├── js/
 │   └── script.js         # Footer year, booking button, video play overlay
 ├── images/
-│   ├── manav-hero.jpg    # Hero background, 2560x1280
-│   ├── manav-hero-small.jpg # Narrow-screen hero, 1280x640
+│   ├── manav-hero.jpg    # Wide hero, 2560x1280
+│   ├── manav-hero-small.jpg # Upright hero for phones, 1000x1742
 │   ├── favicon.svg       # Site icon
 │   ├── social-preview.jpg # 1200x630 Open Graph card
 │   ├── manav-intro-poster.jpg # Still frame shown before the video plays
-│   └── gallery/          # Five carousel photographs, 920px tall
+│   └── gallery/          # Six gallery photographs, 920px tall
 ├── video/
 │   └── manav-intro.mp4   # Introduction video, H.264 720p, 15s
 ├── wrangler.jsonc        # Cloudflare Worker configuration
@@ -165,31 +165,44 @@ config and macOS artefacts. The live site therefore only receives
 - Favicon, Open Graph and Twitter card metadata
 - Fitness and medical disclaimer
 - Introduction video in the About section, click to play
-- Sliding photo gallery
+- Auto-gliding photo gallery with a pause control
 - Scroll reveal animations and scrollspy navigation
 
 ### Hero composition
 
-The hero photograph has Manav centre-frame, exactly where the headline
-sits. Rather than crop him out, the flat dark wall to his left is sampled
-and extended, shifting him into the right half of a 2:1 canvas and leaving
-clean space for the type. The join is crossfaded over 260px so there is no
-visible seam.
+The hero photograph is portrait, and a wide banner crop of it would cut
+Manav's head off. Two separate files are produced from the one source:
 
-On narrow screens the headline sits *above* him rather than beside him, so
-the overlay gradient switches from horizontal to vertical and a
-1280px-wide source file is used instead of the full 2560px one.
+- **Desktop** (`manav-hero.jpg`, 2560x1280) — a horizontal band is taken
+  around his head and torso, then the flat dark wall to his left is sampled
+  and extended to shift him into the right half of the frame, leaving clean
+  space for the headline. The join is crossfaded over 260px so there is no
+  visible seam.
+- **Narrow screens** (`manav-hero-small.jpg`, 1000x1742) — an upright crop
+  that keeps the original composition. The headline moves to the *bottom*
+  of the hero and the gradient darkens downwards, so his face and upper
+  body stay clear instead of sitting behind the type.
+
+Both are desaturated to 55% to ease the source's blue cast, so the red
+brand accents still read against it.
 
 ### Gallery
 
-The carousel is a flex row with `scroll-snap-type: x mandatory`. Slides
-have a fixed height and automatic width, so portrait and landscape shots
-sit side by side without cropping — which also preserves the film border
-on the wide gym floor photograph.
+The strip contains the same six photographs twice inside a flex row that
+is animated by exactly `-50%` of its width. The second set therefore
+arrives in the first set's starting position and the loop repeats with no
+visible jump.
 
-Scrolling is entirely native: swipe, trackpad and arrow keys all work with
-JavaScript disabled. The arrow buttons are added by script and only appear
-when there is actually something to scroll to.
+Slides use a fixed height and automatic width, so portrait and landscape
+shots sit together without cropping — which is also what keeps the film
+border on the gym floor photograph intact. The edges are feathered with a
+CSS mask so images enter and leave rather than being cut off.
+
+The animation is pure CSS and runs with scripting disabled. It pauses on
+hover and on keyboard focus, and there is an explicit pause button because
+continuously moving content needs a stop control and hover does not exist
+on touch screens. `prefers-reduced-motion` stops the animation entirely
+and makes the strip scrollable by hand instead.
 
 ### Video encoding
 

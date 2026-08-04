@@ -445,7 +445,7 @@ ul {
 ========================= */
 
 .gallery-section {
-    padding-bottom: 90px;
+    padding-bottom: 80px;
 
     background: var(--black);
     border-top: 1px solid var(--border-grey);
@@ -469,146 +469,145 @@ ul {
     margin-bottom: 6px;
 }
 
+/* The strip fades out at both edges so photographs enter and leave
+   the viewport rather than being cut off by a hard border. */
+
 .gallery-carousel {
     position: relative;
+    overflow: hidden;
+
+    -webkit-mask-image: linear-gradient(
+        90deg,
+        transparent 0,
+        #000 90px,
+        #000 calc(100% - 90px),
+        transparent 100%
+    );
+
+    mask-image: linear-gradient(
+        90deg,
+        transparent 0,
+        #000 90px,
+        #000 calc(100% - 90px),
+        transparent 100%
+    );
 }
 
-/* Native horizontal scrolling with snap points. Works without
-   JavaScript; the arrow buttons are progressive enhancement. */
+/* Two identical tracks sit side by side. Translating the pair by exactly
+   half its width brings the second set into the first set's starting
+   position, so the loop repeats with no visible jump. */
+
+.gallery-marquee {
+    display: flex;
+    width: max-content;
+
+    animation: gallery-glide 80s linear infinite;
+}
+
+.gallery-carousel:hover .gallery-marquee,
+.gallery-carousel:focus-within .gallery-marquee {
+    animation-play-state: paused;
+}
+
+.gallery-marquee.is-paused {
+    animation-play-state: paused;
+}
+
+@keyframes gallery-glide {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(-50%);
+    }
+}
 
 .gallery-track {
     display: flex;
     gap: 18px;
-
-    padding: 0 max(24px, calc((100% - 1120px) / 2));
-
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scroll-behavior: smooth;
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
-}
-
-.gallery-track::-webkit-scrollbar {
-    display: none;
-}
-
-.gallery-track:focus-visible {
-    outline: 3px solid var(--red);
-    outline-offset: 4px;
+    padding-right: 18px;
 }
 
 .gallery-slide {
-    margin: 0;
     flex: 0 0 auto;
-    scroll-snap-align: center;
 }
 
 .gallery-slide img {
     display: block;
     width: auto;
-    height: 460px;
+    height: 440px;
 
     border: 1px solid var(--border-grey);
     background: var(--card-grey);
 
     filter: grayscale(0.25);
-    transition: filter 0.4s ease, transform 0.4s ease;
+    transition: filter 0.4s ease;
 }
 
-.gallery-slide:hover img {
+.gallery-slide img:hover {
     filter: grayscale(0);
-    transform: translateY(-4px);
 }
 
-.gallery-slide figcaption {
-    margin-top: 12px;
-
-    color: #8a8a8a;
-    font-size: 0.78rem;
-    font-weight: 700;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-}
-
-.gallery-arrow {
-    position: absolute;
-    top: 230px;
-    z-index: 5;
-
-    width: 52px;
-    height: 52px;
-    display: none;
-    align-items: center;
+.gallery-controls {
+    margin-top: 28px;
+    display: flex;
     justify-content: center;
+}
+
+/* An explicit pause control is required for content that animates
+   continuously, since hovering is not available on touch screens. */
+
+.gallery-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+
+    padding: 9px 20px;
 
     border: 1px solid var(--border-grey);
-    border-radius: 50%;
-    background: rgba(8, 8, 8, 0.82);
-    backdrop-filter: blur(6px);
+    background: transparent;
     cursor: pointer;
 
-    transform: translateY(-50%);
-    transition: background 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
+    color: #8a8a8a;
+    font-family: inherit;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+
+    transition: color 0.2s ease, border-color 0.2s ease;
 }
 
-.gallery-arrow.is-visible {
-    display: flex;
-}
-
-.gallery-arrow:hover {
-    background: var(--red);
+.gallery-toggle:hover {
+    color: var(--white);
     border-color: var(--red);
 }
 
-.gallery-arrow:focus-visible {
+.gallery-toggle:focus-visible {
     outline: 3px solid var(--red);
     outline-offset: 3px;
 }
 
-.gallery-arrow[disabled] {
-    opacity: 0.3;
-    cursor: default;
-}
-
-.gallery-arrow[disabled]:hover {
-    background: rgba(8, 8, 8, 0.82);
-    border-color: var(--border-grey);
-}
-
-.gallery-arrow span {
-    width: 11px;
+.gallery-toggle-icon {
+    width: 9px;
     height: 11px;
-    border-top: 2px solid var(--white);
-    border-right: 2px solid var(--white);
+
+    border-left: 3px solid currentColor;
+    border-right: 3px solid currentColor;
 }
 
-.gallery-arrow-prev {
-    left: max(20px, calc((100% - 1120px) / 2 - 26px));
-}
+/* Pressed state means the animation is paused, so the icon becomes
+   a play triangle. */
 
-.gallery-arrow-prev span {
-    margin-left: 4px;
-    transform: rotate(-135deg);
-}
+.gallery-toggle[aria-pressed="true"] .gallery-toggle-icon {
+    width: 0;
+    height: 0;
 
-.gallery-arrow-next {
-    right: max(20px, calc((100% - 1120px) / 2 - 26px));
-}
-
-.gallery-arrow-next span {
-    margin-right: 4px;
-    transform: rotate(45deg);
-}
-
-.gallery-hint {
-    margin: 26px auto 0 !important;
-
-    color: #6d6d6d !important;
-    font-size: 0.76rem !important;
-    letter-spacing: 0.14em;
-    text-align: center;
-    text-transform: uppercase;
+    border-top: 6px solid transparent;
+    border-bottom: 6px solid transparent;
+    border-left: 10px solid currentColor;
+    border-right: 0;
 }
 
 .section-dark {
@@ -887,13 +886,18 @@ ul {
         transition: none;
     }
 
-    .gallery-track {
-        scroll-behavior: auto;
+    /* Stop the gallery gliding, and let it be scrolled by hand instead. */
+
+    .gallery-marquee {
+        animation: none;
+    }
+
+    .gallery-carousel {
+        overflow-x: auto;
     }
 
     .button:hover,
-    .service-card:hover,
-    .gallery-slide:hover img {
+    .service-card:hover {
         transform: none;
     }
 }
@@ -950,10 +954,6 @@ ul {
         height: 340px;
     }
 
-    .gallery-arrow {
-        top: 170px;
-    }
-
     .services-grid {
         grid-template-columns: 1fr;
     }
@@ -1001,25 +1001,34 @@ ul {
         font-size: 0.82rem;
     }
 
-    /* On a narrow screen the headline sits above the subject rather than
-       beside him, so the gradient runs top-to-bottom instead of
-       left-to-right. A smaller source file is used to save bandwidth. */
+    /* The hero photograph is portrait, so narrow screens get a dedicated
+       upright crop rather than a slice of the wide one. The headline moves
+       to the bottom, which keeps Manav's face and upper body clear, and
+       the gradient darkens downwards to sit behind it. */
 
     .hero {
         min-height: 680px;
 
+        align-items: flex-end;
+
         background-image:
             linear-gradient(
                 180deg,
-                rgba(0, 0, 0, 0.92) 0%,
-                rgba(0, 0, 0, 0.62) 52%,
-                rgba(0, 0, 0, 0.12) 100%
+                rgba(0, 0, 0, 0.15) 0%,
+                rgba(0, 0, 0, 0.35) 42%,
+                rgba(0, 0, 0, 0.82) 68%,
+                rgba(0, 0, 0, 0.95) 100%
             ),
             url("../images/manav-hero-small.jpg");
 
         background-size: cover;
-        background-position: 78% center;
+        background-position: center;
         background-repeat: no-repeat;
+    }
+
+    .hero-content {
+        padding-top: 70px;
+        padding-bottom: 54px;
     }
 
     .hero h1 {
@@ -1036,19 +1045,12 @@ ul {
     }
 
     .gallery-slide img {
-        height: 260px;
+        height: 250px;
     }
 
     .gallery-track {
         gap: 12px;
-        padding: 0 14px;
-    }
-
-    /* Arrows are hidden on touch-sized screens; swiping is the
-       natural gesture and the buttons only steal space. */
-
-    .gallery-arrow.is-visible {
-        display: none;
+        padding-right: 12px;
     }
 
     .hero-description {

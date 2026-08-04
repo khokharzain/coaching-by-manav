@@ -246,22 +246,31 @@
             </div>
 
             <!--
-                Horizontal filmstrip.
+                Auto-gliding filmstrip.
+
+                The strip contains the same six photographs twice and is
+                animated by exactly half its width, so the second set arrives
+                in the first one's position and the loop is seamless.
+
                 Slides keep their natural aspect ratio at a fixed height, so
                 portrait and landscape shots sit together without cropping.
-                Scrolling is native CSS scroll-snap; the arrows are an
-                enhancement layered on top by JavaScript.
             -->
 
-            <div class="gallery-carousel reveal reveal-delay-1">
-                <div
-                    class="gallery-track"
-                    id="gallery-track"
-                    tabindex="0"
-                    role="region"
-                    aria-label="Training photographs, scrollable"
-                >
-                    <figure class="gallery-slide">
+            <div class="gallery-carousel">
+                <div class="gallery-marquee" id="gallery-marquee">
+                    <div class="gallery-track">
+                    <div class="gallery-slide">
+                        <img
+                            src="images/gallery/gallery-hero-pose.jpg"
+                            alt="Manav posing against the gym wall"
+                            width="1380"
+                            height="920"
+                            loading="lazy"
+                            decoding="async"
+                        >
+                    </div>
+
+                    <div class="gallery-slide">
                         <img
                             src="images/gallery/gallery-one-more-rep.jpg"
                             alt="The gym floor beneath a large One More Rep sign"
@@ -270,10 +279,9 @@
                             loading="lazy"
                             decoding="async"
                         >
-                        <figcaption>One more rep</figcaption>
-                    </figure>
+                    </div>
 
-                    <figure class="gallery-slide">
+                    <div class="gallery-slide">
                         <img
                             src="images/gallery/gallery-portrait.jpg"
                             alt="Manav in the gym beside the training centre sign"
@@ -282,10 +290,9 @@
                             loading="lazy"
                             decoding="async"
                         >
-                        <figcaption>At the gym</figcaption>
-                    </figure>
+                    </div>
 
-                    <figure class="gallery-slide">
+                    <div class="gallery-slide">
                         <img
                             src="images/gallery/gallery-back-pose.jpg"
                             alt="Manav performing a back double biceps pose"
@@ -294,10 +301,9 @@
                             loading="lazy"
                             decoding="async"
                         >
-                        <figcaption>Strength and conditioning</figcaption>
-                    </figure>
+                    </div>
 
-                    <figure class="gallery-slide">
+                    <div class="gallery-slide">
                         <img
                             src="images/gallery/gallery-gym-floor.jpg"
                             alt="Wide view of the gym floor and equipment"
@@ -306,10 +312,9 @@
                             loading="lazy"
                             decoding="async"
                         >
-                        <figcaption>Where legends are made</figcaption>
-                    </figure>
+                    </div>
 
-                    <figure class="gallery-slide">
+                    <div class="gallery-slide">
                         <img
                             src="images/gallery/gallery-back-bw.jpg"
                             alt="Black and white photograph of Manav's back"
@@ -318,34 +323,90 @@
                             loading="lazy"
                             decoding="async"
                         >
-                        <figcaption>Consistent training</figcaption>
-                    </figure>
+                    </div>
+                    </div>
+
+                    <div class="gallery-track" aria-hidden="true">
+                    <div class="gallery-slide">
+                        <img
+                            src="images/gallery/gallery-hero-pose.jpg"
+                            alt=""
+                            width="1380"
+                            height="920"
+                            loading="lazy"
+                            decoding="async"
+                        >
+                    </div>
+
+                    <div class="gallery-slide">
+                        <img
+                            src="images/gallery/gallery-one-more-rep.jpg"
+                            alt=""
+                            width="1380"
+                            height="920"
+                            loading="lazy"
+                            decoding="async"
+                        >
+                    </div>
+
+                    <div class="gallery-slide">
+                        <img
+                            src="images/gallery/gallery-portrait.jpg"
+                            alt=""
+                            width="613"
+                            height="920"
+                            loading="lazy"
+                            decoding="async"
+                        >
+                    </div>
+
+                    <div class="gallery-slide">
+                        <img
+                            src="images/gallery/gallery-back-pose.jpg"
+                            alt=""
+                            width="1380"
+                            height="920"
+                            loading="lazy"
+                            decoding="async"
+                        >
+                    </div>
+
+                    <div class="gallery-slide">
+                        <img
+                            src="images/gallery/gallery-gym-floor.jpg"
+                            alt=""
+                            width="1380"
+                            height="920"
+                            loading="lazy"
+                            decoding="async"
+                        >
+                    </div>
+
+                    <div class="gallery-slide">
+                        <img
+                            src="images/gallery/gallery-back-bw.jpg"
+                            alt=""
+                            width="1380"
+                            height="920"
+                            loading="lazy"
+                            decoding="async"
+                        >
+                    </div>
+                    </div>
                 </div>
-
-                <button
-                    type="button"
-                    class="gallery-arrow gallery-arrow-prev"
-                    id="gallery-prev"
-                    aria-controls="gallery-track"
-                    aria-label="Show previous photographs"
-                >
-                    <span aria-hidden="true"></span>
-                </button>
-
-                <button
-                    type="button"
-                    class="gallery-arrow gallery-arrow-next"
-                    id="gallery-next"
-                    aria-controls="gallery-track"
-                    aria-label="Show next photographs"
-                >
-                    <span aria-hidden="true"></span>
-                </button>
             </div>
 
-            <p class="gallery-hint">
-                Swipe or drag to see more
-            </p>
+            <div class="gallery-controls">
+                <button
+                    type="button"
+                    class="gallery-toggle"
+                    id="gallery-toggle"
+                    aria-pressed="false"
+                >
+                    <span class="gallery-toggle-icon" aria-hidden="true"></span>
+                    <span class="gallery-toggle-text">Pause</span>
+                </button>
+            </div>
         </section>
 
         <!-- Coaching services section -->

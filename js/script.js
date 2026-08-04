@@ -53,61 +53,26 @@ document.addEventListener("DOMContentLoaded", () => {
         introVideo.addEventListener("play", hideOverlay);
     }
 
-    // Gallery carousel arrows.
+    // Gallery pause control.
     //
-    // Scrolling itself is handled natively by CSS scroll-snap, so the
-    // gallery is fully usable with these buttons absent. They are only
-    // shown once wired up, and only when there is content to scroll to.
-    const galleryTrack = document.querySelector("#gallery-track");
-    const galleryPrev = document.querySelector("#gallery-prev");
-    const galleryNext = document.querySelector("#gallery-next");
+    // The strip glides via a CSS animation, so it works with scripting
+    // disabled. This only adds the ability to stop it, which continuously
+    // moving content needs — hovering is not available on a touch screen.
+    const galleryMarquee = document.querySelector("#gallery-marquee");
+    const galleryToggle = document.querySelector("#gallery-toggle");
 
-    if (galleryTrack && galleryPrev && galleryNext) {
-        const scrollAmount = () => {
-            const slide = galleryTrack.querySelector(".gallery-slide");
-            return slide
-                ? slide.getBoundingClientRect().width + 18
-                : galleryTrack.clientWidth * 0.8;
-        };
+    if (galleryMarquee && galleryToggle) {
+        const toggleText = galleryToggle.querySelector(".gallery-toggle-text");
 
-        const canScroll = () =>
-            galleryTrack.scrollWidth - galleryTrack.clientWidth > 4;
+        galleryToggle.addEventListener("click", () => {
+            const paused = galleryMarquee.classList.toggle("is-paused");
 
-        const syncArrows = () => {
-            const maxScroll =
-                galleryTrack.scrollWidth - galleryTrack.clientWidth;
+            galleryToggle.setAttribute("aria-pressed", String(paused));
 
-            galleryPrev.disabled = galleryTrack.scrollLeft <= 4;
-            galleryNext.disabled = galleryTrack.scrollLeft >= maxScroll - 4;
-
-            galleryPrev.classList.toggle("is-visible", canScroll());
-            galleryNext.classList.toggle("is-visible", canScroll());
-        };
-
-        galleryPrev.addEventListener("click", () => {
-            galleryTrack.scrollBy({ left: -scrollAmount(), behavior: "smooth" });
-        });
-
-        galleryNext.addEventListener("click", () => {
-            galleryTrack.scrollBy({ left: scrollAmount(), behavior: "smooth" });
-        });
-
-        // Arrow keys move the strip when it has keyboard focus.
-        galleryTrack.addEventListener("keydown", (event) => {
-            if (event.key === "ArrowRight") {
-                event.preventDefault();
-                galleryTrack.scrollBy({ left: scrollAmount(), behavior: "smooth" });
-            }
-
-            if (event.key === "ArrowLeft") {
-                event.preventDefault();
-                galleryTrack.scrollBy({ left: -scrollAmount(), behavior: "smooth" });
+            if (toggleText) {
+                toggleText.textContent = paused ? "Play" : "Pause";
             }
         });
-
-        galleryTrack.addEventListener("scroll", syncArrows, { passive: true });
-        window.addEventListener("resize", syncArrows);
-        syncArrows();
     }
 
     // Reveal sections as they scroll into view.
