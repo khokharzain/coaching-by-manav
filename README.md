@@ -51,7 +51,7 @@ CoachingByManav/
 ├── css/
 │   └── styles.css        # All styling, including responsive breakpoints
 ├── js/
-│   └── script.js         # Footer year, booking button, video play overlay
+│   └── script.js         # Footer year, booking button, video, gallery, scroll UI
 ├── images/
 │   ├── manav-hero.jpg    # Wide hero, 2560x1280
 │   ├── manav-hero-small.jpg # Upright hero for phones, 1000x1742
@@ -167,6 +167,7 @@ config and macOS artefacts. The live site therefore only receives
 - Introduction video in the About section, click to play
 - Auto-gliding photo gallery with a pause control
 - Scroll reveal animations and scrollspy navigation
+- Scroll progress line beneath the header
 
 ### Hero composition
 
@@ -203,6 +204,15 @@ hover and on keyboard focus, and there is an explicit pause button because
 continuously moving content needs a stop control and hover does not exist
 on touch screens. `prefers-reduced-motion` stops the animation entirely
 and makes the strip scrollable by hand instead.
+
+### Scroll progress line
+
+The line under the header is driven by a scroll-driven CSS animation
+(`animation-timeline: scroll(root block)`) where the browser supports it,
+which runs off the main thread and stays smooth under load. `script.js`
+checks for that same feature and only attaches a scroll handler when it is
+missing. The fallback batches into `requestAnimationFrame` and writes only
+a `transform`, so scrolling never triggers layout.
 
 ### Video encoding
 

@@ -143,6 +143,64 @@ ul {
 
 
 /* =========================
+   Scroll progress line
+========================= */
+
+/* Sits on the header's bottom border and fills left to right as the
+   page is scrolled. */
+
+.scroll-progress {
+    position: absolute;
+    left: 0;
+    bottom: -1px;
+
+    width: 100%;
+    height: 3px;
+
+    overflow: hidden;
+    pointer-events: none;
+}
+
+.scroll-progress-bar {
+    display: block;
+    width: 100%;
+    height: 100%;
+
+    background: linear-gradient(
+        90deg,
+        var(--dark-red) 0%,
+        var(--red) 100%
+    );
+
+    transform: scaleX(0);
+    transform-origin: left center;
+    will-change: transform;
+}
+
+/* Where the browser supports scroll-driven animations the bar is driven
+   entirely by CSS, which stays smooth because it never touches the main
+   thread. Browsers without it fall back to the scroll handler in
+   script.js, which checks for this same feature before running. */
+
+@supports (animation-timeline: scroll()) {
+    .scroll-progress-bar {
+        animation: scroll-progress linear both;
+        animation-timeline: scroll(root block);
+    }
+}
+
+@keyframes scroll-progress {
+    from {
+        transform: scaleX(0);
+    }
+
+    to {
+        transform: scaleX(1);
+    }
+}
+
+
+/* =========================
    Hero section
 ========================= */
 

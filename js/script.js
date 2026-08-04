@@ -53,6 +53,47 @@ document.addEventListener("DOMContentLoaded", () => {
         introVideo.addEventListener("play", hideOverlay);
     }
 
+    // Scroll progress line.
+    //
+    // Browsers that support scroll-driven CSS animations already handle
+    // this in the stylesheet, off the main thread, so this only runs as a
+    // fallback. Updates are batched into an animation frame and only
+    // change a transform, so nothing is re-laid out while scrolling.
+    const progressBar = document.querySelector("#scroll-progress-bar");
+
+    const hasCssScrollTimeline =
+        typeof window.CSS !== "undefined" &&
+        typeof window.CSS.supports === "function" &&
+        window.CSS.supports("animation-timeline", "scroll()");
+
+    if (progressBar && !hasCssScrollTimeline) {
+        let queued = false;
+
+        const drawProgress = () => {
+            const root = document.documentElement;
+            const scrollable = root.scrollHeight - root.clientHeight;
+
+            const progress =
+                scrollable > 0
+                    ? Math.min(1, Math.max(0, root.scrollTop / scrollable))
+                    : 0;
+
+            progressBar.style.transform = "scaleX(" + progress + ")";
+            queued = false;
+        };
+
+        const queueDraw = () => {
+            if (!queued) {
+                queued = true;
+                window.requestAnimationFrame(drawProgress);
+            }
+        };
+
+        window.addEventListener("scroll", queueDraw, { passive: true });
+        window.addEventListener("resize", queueDraw);
+        drawProgress();
+    }
+
     // Gallery pause control.
     //
     // The strip glides via a CSS animation, so it works with scripting
