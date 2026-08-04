@@ -908,6 +908,87 @@ ul {
 
 
 /* =========================
+   Cancellation policy
+========================= */
+
+.policy {
+    margin-top: 90px;
+    padding-top: 60px;
+
+    border-top: 1px solid var(--border-grey);
+}
+
+.policy-header {
+    margin-bottom: 40px;
+}
+
+.policy-header h3 {
+    max-width: 620px;
+
+    font-size: clamp(1.6rem, 3vw, 2.3rem);
+    line-height: 1.15;
+    letter-spacing: -0.035em;
+}
+
+.policy-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 2px;
+
+    background: var(--border-grey);
+    border: 1px solid var(--border-grey);
+}
+
+.policy-item {
+    padding: 26px 28px;
+    background: var(--dark-grey);
+}
+
+.policy-item dt {
+    margin-bottom: 10px;
+    padding-left: 16px;
+    position: relative;
+
+    color: var(--white);
+    font-size: 0.98rem;
+    font-weight: 700;
+}
+
+.policy-item dt::before {
+    content: "";
+    position: absolute;
+    top: 0.55em;
+    left: 0;
+
+    width: 7px;
+    height: 7px;
+
+    background: var(--red);
+}
+
+.policy-item dd {
+    margin: 0;
+    padding-left: 16px;
+
+    color: var(--light-grey);
+    font-size: 0.94rem;
+    line-height: 1.65;
+}
+
+.policy-rights {
+    margin-top: 28px !important;
+    padding: 22px 24px;
+
+    border-left: 3px solid var(--red);
+    background: rgba(23, 23, 23, 0.6);
+
+    color: #8f8f8f !important;
+    font-size: 0.86rem !important;
+    line-height: 1.7;
+}
+
+
+/* =========================
    Scroll reveal
 ========================= */
 
@@ -1010,6 +1091,15 @@ ul {
 
     .gallery-slide img {
         height: 340px;
+    }
+
+    .policy-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .policy {
+        margin-top: 70px;
+        padding-top: 50px;
     }
 
     .services-grid {

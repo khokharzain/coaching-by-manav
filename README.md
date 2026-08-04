@@ -61,6 +61,8 @@ CoachingByManav/
 │   └── gallery/          # Six gallery photographs, 920px tall
 ├── video/
 │   └── manav-intro.mp4   # Introduction video, H.264 720p, 15s
+├── docs/
+│   └── cancellation-policy.md # Policy text for Square, and the reasoning
 ├── wrangler.jsonc        # Cloudflare Worker configuration
 ├── .assetsignore         # Files excluded from the deployed site
 └── README.md
@@ -168,6 +170,7 @@ config and macOS artefacts. The live site therefore only receives
 - Auto-gliding photo gallery with a pause control
 - Scroll reveal animations and scrollspy navigation
 - Scroll progress line beneath the header
+- Cancellation and rescheduling policy, shown before the point of payment
 
 ### Hero composition
 
@@ -245,7 +248,6 @@ once a visitor presses play and costs nothing on initial page load.
 - Photo gallery — awaiting real training photographs
 - Testimonials, with client permission
 - FAQ section
-- Cancellation and rescheduling policy
 - Privacy notice
 - Higher-resolution hero image
 - Custom domain
