@@ -53,10 +53,12 @@ CoachingByManav/
 ├── js/
 │   └── script.js         # Footer year, booking button, video play overlay
 ├── images/
-│   ├── manav-hero.jpg    # Hero background
+│   ├── manav-hero.jpg    # Hero background, 2560x1280
+│   ├── manav-hero-small.jpg # Narrow-screen hero, 1280x640
 │   ├── favicon.svg       # Site icon
 │   ├── social-preview.jpg # 1200x630 Open Graph card
-│   └── manav-intro-poster.jpg # Still frame shown before the video plays
+│   ├── manav-intro-poster.jpg # Still frame shown before the video plays
+│   └── gallery/          # Five carousel photographs, 920px tall
 ├── video/
 │   └── manav-intro.mp4   # Introduction video, H.264 720p, 15s
 ├── wrangler.jsonc        # Cloudflare Worker configuration
@@ -163,6 +165,31 @@ config and macOS artefacts. The live site therefore only receives
 - Favicon, Open Graph and Twitter card metadata
 - Fitness and medical disclaimer
 - Introduction video in the About section, click to play
+- Sliding photo gallery
+- Scroll reveal animations and scrollspy navigation
+
+### Hero composition
+
+The hero photograph has Manav centre-frame, exactly where the headline
+sits. Rather than crop him out, the flat dark wall to his left is sampled
+and extended, shifting him into the right half of a 2:1 canvas and leaving
+clean space for the type. The join is crossfaded over 260px so there is no
+visible seam.
+
+On narrow screens the headline sits *above* him rather than beside him, so
+the overlay gradient switches from horizontal to vertical and a
+1280px-wide source file is used instead of the full 2560px one.
+
+### Gallery
+
+The carousel is a flex row with `scroll-snap-type: x mandatory`. Slides
+have a fixed height and automatic width, so portrait and landscape shots
+sit side by side without cropping — which also preserves the film border
+on the wide gym floor photograph.
+
+Scrolling is entirely native: swipe, trackpad and arrow keys all work with
+JavaScript disabled. The arrow buttons are added by script and only appear
+when there is actually something to scroll to.
 
 ### Video encoding
 

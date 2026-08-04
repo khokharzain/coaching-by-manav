@@ -91,6 +91,10 @@
                     </li>
 
                     <li>
+                        <a href="#gallery">Gallery</a>
+                    </li>
+
+                    <li>
                         <a href="#coaching">Coaching</a>
                     </li>
 
@@ -146,7 +150,7 @@
 
         <section id="about" class="section">
             <div class="container about-layout">
-                <div class="about-content">
+                <div class="about-content reveal">
                     <p class="section-label">
                         About Manav
                     </p>
@@ -175,7 +179,7 @@
                     visitor presses play, so it costs nothing on page load.
                 -->
 
-                <figure class="about-video">
+                <figure class="about-video reveal reveal-delay-1">
                     <div class="video-frame">
                         <video
                             id="intro-video"
@@ -210,10 +214,138 @@
                     </div>
 
                     <figcaption>
-                        Meet Manav — a short introduction
+                        Meet Manav!
                     </figcaption>
                 </figure>
             </div>
+        </section>
+
+        <!-- Gallery section -->
+
+        <section id="gallery" class="section gallery-section">
+            <div class="container">
+                <div class="gallery-heading reveal">
+                    <div>
+                        <p class="section-label">
+                            Training Gallery
+                        </p>
+
+                        <h2>
+                            Training with
+                            <span class="red-text">
+                                purpose and consistency
+                            </span>
+                        </h2>
+                    </div>
+
+                    <p>
+                        A closer look at Manav's training approach, the gym
+                        he trains in, and the standard he holds himself to.
+                    </p>
+                </div>
+            </div>
+
+            <!--
+                Horizontal filmstrip.
+                Slides keep their natural aspect ratio at a fixed height, so
+                portrait and landscape shots sit together without cropping.
+                Scrolling is native CSS scroll-snap; the arrows are an
+                enhancement layered on top by JavaScript.
+            -->
+
+            <div class="gallery-carousel reveal reveal-delay-1">
+                <div
+                    class="gallery-track"
+                    id="gallery-track"
+                    tabindex="0"
+                    role="region"
+                    aria-label="Training photographs, scrollable"
+                >
+                    <figure class="gallery-slide">
+                        <img
+                            src="images/gallery/gallery-one-more-rep.jpg"
+                            alt="The gym floor beneath a large One More Rep sign"
+                            width="1380"
+                            height="920"
+                            loading="lazy"
+                            decoding="async"
+                        >
+                        <figcaption>One more rep</figcaption>
+                    </figure>
+
+                    <figure class="gallery-slide">
+                        <img
+                            src="images/gallery/gallery-portrait.jpg"
+                            alt="Manav in the gym beside the training centre sign"
+                            width="613"
+                            height="920"
+                            loading="lazy"
+                            decoding="async"
+                        >
+                        <figcaption>At the gym</figcaption>
+                    </figure>
+
+                    <figure class="gallery-slide">
+                        <img
+                            src="images/gallery/gallery-back-pose.jpg"
+                            alt="Manav performing a back double biceps pose"
+                            width="1380"
+                            height="920"
+                            loading="lazy"
+                            decoding="async"
+                        >
+                        <figcaption>Strength and conditioning</figcaption>
+                    </figure>
+
+                    <figure class="gallery-slide">
+                        <img
+                            src="images/gallery/gallery-gym-floor.jpg"
+                            alt="Wide view of the gym floor and equipment"
+                            width="1380"
+                            height="920"
+                            loading="lazy"
+                            decoding="async"
+                        >
+                        <figcaption>Where legends are made</figcaption>
+                    </figure>
+
+                    <figure class="gallery-slide">
+                        <img
+                            src="images/gallery/gallery-back-bw.jpg"
+                            alt="Black and white photograph of Manav's back"
+                            width="1380"
+                            height="920"
+                            loading="lazy"
+                            decoding="async"
+                        >
+                        <figcaption>Consistent training</figcaption>
+                    </figure>
+                </div>
+
+                <button
+                    type="button"
+                    class="gallery-arrow gallery-arrow-prev"
+                    id="gallery-prev"
+                    aria-controls="gallery-track"
+                    aria-label="Show previous photographs"
+                >
+                    <span aria-hidden="true"></span>
+                </button>
+
+                <button
+                    type="button"
+                    class="gallery-arrow gallery-arrow-next"
+                    id="gallery-next"
+                    aria-controls="gallery-track"
+                    aria-label="Show next photographs"
+                >
+                    <span aria-hidden="true"></span>
+                </button>
+            </div>
+
+            <p class="gallery-hint">
+                Swipe or drag to see more
+            </p>
         </section>
 
         <!-- Coaching services section -->
@@ -223,16 +355,16 @@
             class="section section-dark"
         >
             <div class="container">
-                <p class="section-label">
+                <p class="section-label reveal">
                     Coaching Services
                 </p>
 
-                <h2>
+                <h2 class="reveal">
                     How I can help
                 </h2>
 
                 <div class="services-grid">
-                    <article class="service-card">
+                    <article class="service-card reveal reveal-delay-1">
                         <h3>
                             One-on-One Coaching
                         </h3>
@@ -243,7 +375,7 @@
                         </p>
                     </article>
 
-                    <article class="service-card">
+                    <article class="service-card reveal reveal-delay-2">
                         <h3>
                             Workout Guidance
                         </h3>
@@ -254,7 +386,7 @@
                         </p>
                     </article>
 
-                    <article class="service-card">
+                    <article class="service-card reveal reveal-delay-3">
                         <h3>
                             General Healthy Eating Support
                         </h3>
@@ -266,7 +398,7 @@
                         </p>
                     </article>
 
-                    <article class="service-card">
+                    <article class="service-card reveal reveal-delay-1">
                         <h3>
                             Accountability and Support
                         </h3>
@@ -287,7 +419,7 @@
             class="section booking-section"
         >
             <div class="container booking-layout">
-                <div class="booking-content">
+                <div class="booking-content reveal">
                     <p class="section-label">
                         Book a Session
                     </p>
@@ -358,7 +490,7 @@
                     </div>
                 </div>
 
-                <div class="booking-card">
+                <div class="booking-card reveal reveal-delay-1">
                     <p class="section-label">
                         Appointments
                     </p>
@@ -406,7 +538,7 @@
         <!-- Contact section -->
 
         <section id="contact" class="section">
-            <div class="container contact-section">
+            <div class="container contact-section reveal">
                 <p class="section-label">
                     Contact
                 </p>

@@ -125,8 +125,20 @@ ul {
     transition: width 0.2s ease;
 }
 
-.nav-links a:hover::after {
+.nav-links a:hover::after,
+.nav-links a.is-current::after {
     width: 100%;
+}
+
+.nav-links a.is-current {
+    color: var(--white);
+}
+
+.nav-links a:focus-visible,
+.logo:focus-visible,
+.button:focus-visible {
+    outline: 3px solid var(--red);
+    outline-offset: 4px;
 }
 
 
@@ -428,6 +440,177 @@ ul {
     text-align: center;
 }
 
+/* =========================
+   Gallery carousel
+========================= */
+
+.gallery-section {
+    padding-bottom: 90px;
+
+    background: var(--black);
+    border-top: 1px solid var(--border-grey);
+    border-bottom: 1px solid var(--border-grey);
+}
+
+.gallery-heading {
+    margin-bottom: 48px;
+
+    display: grid;
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 60px;
+    align-items: end;
+}
+
+.gallery-heading h2 {
+    margin-bottom: 0;
+}
+
+.gallery-heading > p {
+    margin-bottom: 6px;
+}
+
+.gallery-carousel {
+    position: relative;
+}
+
+/* Native horizontal scrolling with snap points. Works without
+   JavaScript; the arrow buttons are progressive enhancement. */
+
+.gallery-track {
+    display: flex;
+    gap: 18px;
+
+    padding: 0 max(24px, calc((100% - 1120px) / 2));
+
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+}
+
+.gallery-track::-webkit-scrollbar {
+    display: none;
+}
+
+.gallery-track:focus-visible {
+    outline: 3px solid var(--red);
+    outline-offset: 4px;
+}
+
+.gallery-slide {
+    margin: 0;
+    flex: 0 0 auto;
+    scroll-snap-align: center;
+}
+
+.gallery-slide img {
+    display: block;
+    width: auto;
+    height: 460px;
+
+    border: 1px solid var(--border-grey);
+    background: var(--card-grey);
+
+    filter: grayscale(0.25);
+    transition: filter 0.4s ease, transform 0.4s ease;
+}
+
+.gallery-slide:hover img {
+    filter: grayscale(0);
+    transform: translateY(-4px);
+}
+
+.gallery-slide figcaption {
+    margin-top: 12px;
+
+    color: #8a8a8a;
+    font-size: 0.78rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.gallery-arrow {
+    position: absolute;
+    top: 230px;
+    z-index: 5;
+
+    width: 52px;
+    height: 52px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid var(--border-grey);
+    border-radius: 50%;
+    background: rgba(8, 8, 8, 0.82);
+    backdrop-filter: blur(6px);
+    cursor: pointer;
+
+    transform: translateY(-50%);
+    transition: background 0.2s ease, border-color 0.2s ease, opacity 0.2s ease;
+}
+
+.gallery-arrow.is-visible {
+    display: flex;
+}
+
+.gallery-arrow:hover {
+    background: var(--red);
+    border-color: var(--red);
+}
+
+.gallery-arrow:focus-visible {
+    outline: 3px solid var(--red);
+    outline-offset: 3px;
+}
+
+.gallery-arrow[disabled] {
+    opacity: 0.3;
+    cursor: default;
+}
+
+.gallery-arrow[disabled]:hover {
+    background: rgba(8, 8, 8, 0.82);
+    border-color: var(--border-grey);
+}
+
+.gallery-arrow span {
+    width: 11px;
+    height: 11px;
+    border-top: 2px solid var(--white);
+    border-right: 2px solid var(--white);
+}
+
+.gallery-arrow-prev {
+    left: max(20px, calc((100% - 1120px) / 2 - 26px));
+}
+
+.gallery-arrow-prev span {
+    margin-left: 4px;
+    transform: rotate(-135deg);
+}
+
+.gallery-arrow-next {
+    right: max(20px, calc((100% - 1120px) / 2 - 26px));
+}
+
+.gallery-arrow-next span {
+    margin-right: 4px;
+    transform: rotate(45deg);
+}
+
+.gallery-hint {
+    margin: 26px auto 0 !important;
+
+    color: #6d6d6d !important;
+    font-size: 0.76rem !important;
+    letter-spacing: 0.14em;
+    text-align: center;
+    text-transform: uppercase;
+}
+
 .section-dark {
     background: var(--dark-grey);
     border-top: 1px solid var(--border-grey);
@@ -668,6 +851,55 @@ ul {
 
 
 /* =========================
+   Scroll reveal
+========================= */
+
+/* Elements start hidden only once JavaScript confirms it can reveal them
+   (the .reveal-ready class is set on <html>). Without scripting the
+   content renders normally rather than staying invisible. */
+
+.reveal-ready .reveal {
+    opacity: 0;
+    transform: translateY(24px);
+    transition:
+        opacity 0.7s cubic-bezier(0.22, 1, 0.36, 1),
+        transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: opacity, transform;
+}
+
+.reveal-ready .reveal.is-revealed {
+    opacity: 1;
+    transform: none;
+}
+
+.reveal-ready .reveal-delay-1 { transition-delay: 0.08s; }
+.reveal-ready .reveal-delay-2 { transition-delay: 0.16s; }
+.reveal-ready .reveal-delay-3 { transition-delay: 0.24s; }
+
+@media (prefers-reduced-motion: reduce) {
+    html {
+        scroll-behavior: auto;
+    }
+
+    .reveal-ready .reveal {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
+
+    .gallery-track {
+        scroll-behavior: auto;
+    }
+
+    .button:hover,
+    .service-card:hover,
+    .gallery-slide:hover img {
+        transform: none;
+    }
+}
+
+
+/* =========================
    Tablet
 ========================= */
 
@@ -690,7 +922,7 @@ ul {
 
     .hero {
         min-height: 720px;
-        background-position: 65% center;
+        background-position: 68% center;
     }
 
     .hero-content {
@@ -707,6 +939,19 @@ ul {
         margin-right: auto;
         margin-left: auto;
         max-width: 560px;
+    }
+
+    .gallery-heading {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+    .gallery-slide img {
+        height: 340px;
+    }
+
+    .gallery-arrow {
+        top: 170px;
     }
 
     .services-grid {
@@ -756,20 +1001,24 @@ ul {
         font-size: 0.82rem;
     }
 
+    /* On a narrow screen the headline sits above the subject rather than
+       beside him, so the gradient runs top-to-bottom instead of
+       left-to-right. A smaller source file is used to save bandwidth. */
+
     .hero {
         min-height: 680px;
 
         background-image:
             linear-gradient(
-                90deg,
-                rgba(0, 0, 0, 0.82) 0%,
-                rgba(0, 0, 0, 0.62) 55%,
-                rgba(0, 0, 0, 0.2) 100%
+                180deg,
+                rgba(0, 0, 0, 0.92) 0%,
+                rgba(0, 0, 0, 0.62) 52%,
+                rgba(0, 0, 0, 0.12) 100%
             ),
-            url("../images/manav-hero.jpg");
+            url("../images/manav-hero-small.jpg");
 
         background-size: cover;
-        background-position: 65% center;
+        background-position: 78% center;
         background-repeat: no-repeat;
     }
 
@@ -784,6 +1033,22 @@ ul {
     .video-play-icon {
         width: 62px;
         height: 62px;
+    }
+
+    .gallery-slide img {
+        height: 260px;
+    }
+
+    .gallery-track {
+        gap: 12px;
+        padding: 0 14px;
+    }
+
+    /* Arrows are hidden on touch-sized screens; swiping is the
+       natural gesture and the buttons only steal space. */
+
+    .gallery-arrow.is-visible {
+        display: none;
     }
 
     .hero-description {

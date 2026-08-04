@@ -52,4 +52,121 @@ document.addEventListener("DOMContentLoaded", () => {
         // if playback is blocked for any reason.
         introVideo.addEventListener("play", hideOverlay);
     }
+
+    // Gallery carousel arrows.
+    //
+    // Scrolling itself is handled natively by CSS scroll-snap, so the
+    // gallery is fully usable with these buttons absent. They are only
+    // shown once wired up, and only when there is content to scroll to.
+    const galleryTrack = document.querySelector("#gallery-track");
+    const galleryPrev = document.querySelector("#gallery-prev");
+    const galleryNext = document.querySelector("#gallery-next");
+
+    if (galleryTrack && galleryPrev && galleryNext) {
+        const scrollAmount = () => {
+            const slide = galleryTrack.querySelector(".gallery-slide");
+            return slide
+                ? slide.getBoundingClientRect().width + 18
+                : galleryTrack.clientWidth * 0.8;
+        };
+
+        const canScroll = () =>
+            galleryTrack.scrollWidth - galleryTrack.clientWidth > 4;
+
+        const syncArrows = () => {
+            const maxScroll =
+                galleryTrack.scrollWidth - galleryTrack.clientWidth;
+
+            galleryPrev.disabled = galleryTrack.scrollLeft <= 4;
+            galleryNext.disabled = galleryTrack.scrollLeft >= maxScroll - 4;
+
+            galleryPrev.classList.toggle("is-visible", canScroll());
+            galleryNext.classList.toggle("is-visible", canScroll());
+        };
+
+        galleryPrev.addEventListener("click", () => {
+            galleryTrack.scrollBy({ left: -scrollAmount(), behavior: "smooth" });
+        });
+
+        galleryNext.addEventListener("click", () => {
+            galleryTrack.scrollBy({ left: scrollAmount(), behavior: "smooth" });
+        });
+
+        // Arrow keys move the strip when it has keyboard focus.
+        galleryTrack.addEventListener("keydown", (event) => {
+            if (event.key === "ArrowRight") {
+                event.preventDefault();
+                galleryTrack.scrollBy({ left: scrollAmount(), behavior: "smooth" });
+            }
+
+            if (event.key === "ArrowLeft") {
+                event.preventDefault();
+                galleryTrack.scrollBy({ left: -scrollAmount(), behavior: "smooth" });
+            }
+        });
+
+        galleryTrack.addEventListener("scroll", syncArrows, { passive: true });
+        window.addEventListener("resize", syncArrows);
+        syncArrows();
+    }
+
+    // Reveal sections as they scroll into view.
+    //
+    // The .reveal-ready flag is only added once we know IntersectionObserver
+    // exists, so an older browser shows everything immediately instead of a
+    // blank page.
+    const revealTargets = document.querySelectorAll(".reveal");
+
+    if (revealTargets.length && "IntersectionObserver" in window) {
+        document.documentElement.classList.add("reveal-ready");
+
+        const revealObserver = new IntersectionObserver(
+            (entries) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add("is-revealed");
+                        revealObserver.unobserve(entry.target);
+                    }
+                });
+            },
+            { rootMargin: "0px 0px -12% 0px", threshold: 0.1 }
+        );
+
+        revealTargets.forEach((target) => revealObserver.observe(target));
+    }
+
+    // Highlight the navigation link for whichever section is on screen.
+    const navLinks = Array.from(
+        document.querySelectorAll(".nav-links a[href^='#']")
+    );
+
+    const sections = navLinks
+        .map((link) => document.querySelector(link.getAttribute("href")))
+        .filter(Boolean);
+
+    if (sections.length && "IntersectionObserver" in window) {
+        const setCurrent = (id) => {
+            navLinks.forEach((link) => {
+                link.classList.toggle(
+                    "is-current",
+                    link.getAttribute("href") === "#" + id
+                );
+            });
+        };
+
+        const navObserver = new IntersectionObserver(
+            (entries) => {
+                const visible = entries
+                    .filter((entry) => entry.isIntersecting)
+                    .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+
+                if (visible) {
+                    setCurrent(visible.target.id);
+                }
+            },
+            { rootMargin: "-45% 0px -45% 0px" }
+        );
+
+        sections.forEach((section) => navObserver.observe(section));
+    }
 });
