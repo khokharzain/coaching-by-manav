@@ -51,11 +51,14 @@ CoachingByManav/
 ├── css/
 │   └── styles.css        # All styling, including responsive breakpoints
 ├── js/
-│   └── script.js         # Footer year, booking-button state
+│   └── script.js         # Footer year, booking button, video play overlay
 ├── images/
 │   ├── manav-hero.jpg    # Hero background
 │   ├── favicon.svg       # Site icon
-│   └── social-preview.jpg # 1200x630 Open Graph card
+│   ├── social-preview.jpg # 1200x630 Open Graph card
+│   └── manav-intro-poster.jpg # Still frame shown before the video plays
+├── video/
+│   └── manav-intro.mp4   # Introduction video, H.264, 55s
 ├── wrangler.jsonc        # Cloudflare Worker configuration
 ├── .assetsignore         # Files excluded from the deployed site
 └── README.md
@@ -159,6 +162,26 @@ config and macOS artefacts. The live site therefore only receives
 - Automatic footer copyright year
 - Favicon, Open Graph and Twitter card metadata
 - Fitness and medical disclaimer
+- Introduction video in the About section, click to play
+
+### Video encoding
+
+The source clip was 110 MB of 12.9 Mbps HEVC, which exceeds Cloudflare's
+25 MiB per-file asset limit and is not reliably playable outside Safari.
+It is re-encoded to H.264 at CRF 27 with `+faststart`, bringing it to
+5.4 MB while remaining visually identical at this resolution:
+
+```bash
+ffmpeg -i source.MP4 -t 55 \
+  -vf "fade=t=out:st=54.4:d=0.6" \
+  -c:v libx264 -preset slow -crf 27 -pix_fmt yuv420p \
+  -movflags +faststart \
+  -af "afade=t=out:st=54.4:d=0.6" -c:a aac -b:a 96k \
+  video/manav-intro.mp4
+```
+
+The `<video>` element uses `preload="none"`, so the file is only fetched
+once a visitor presses play and costs nothing on initial page load.
 
 **Pending**
 

@@ -145,27 +145,74 @@
         <!-- About section -->
 
         <section id="about" class="section">
-            <div class="container">
-                <p class="section-label">
-                    About Manav
-                </p>
+            <div class="container about-layout">
+                <div class="about-content">
+                    <p class="section-label">
+                        About Manav
+                    </p>
 
-                <h2>
-                    Coaching designed
-                    <span class="red-text">
-                        around your goals
-                    </span>
-                </h2>
+                    <h2>
+                        Coaching designed
+                        <span class="red-text">
+                            around your goals
+                        </span>
+                    </h2>
 
-                <p>
-                    I provide personalised fitness coaching for clients
-                    who want to become stronger, healthier and more confident.
-                </p>
+                    <p>
+                        I provide personalised fitness coaching for clients
+                        who want to become stronger, healthier and more confident.
+                    </p>
 
-                <p>
-                    Each coaching plan is designed around the client's current
-                    experience, lifestyle, schedule and fitness goals.
-                </p>
+                    <p>
+                        Each coaching plan is designed around the client's current
+                        experience, lifestyle, schedule and fitness goals.
+                    </p>
+                </div>
+
+                <!--
+                    Intro video.
+                    preload="none" means the file is only downloaded once the
+                    visitor presses play, so it costs nothing on page load.
+                -->
+
+                <figure class="about-video">
+                    <div class="video-frame">
+                        <video
+                            id="intro-video"
+                            controls
+                            preload="none"
+                            playsinline
+                            poster="images/manav-intro-poster.jpg"
+                            width="720"
+                            height="1280"
+                        >
+                            <source
+                                src="video/manav-intro.mp4"
+                                type="video/mp4"
+                            >
+
+                            <p>
+                                Your browser cannot play this video.
+                                <a href="video/manav-intro.mp4">
+                                    Download it instead.
+                                </a>
+                            </p>
+                        </video>
+
+                        <button
+                            type="button"
+                            class="video-play"
+                            id="intro-video-play"
+                            aria-label="Play Manav's introduction video"
+                        >
+                            <span class="video-play-icon" aria-hidden="true"></span>
+                        </button>
+                    </div>
+
+                    <figcaption>
+                        Meet Manav — a short introduction
+                    </figcaption>
+                </figure>
             </div>
         </section>
 

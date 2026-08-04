@@ -295,6 +295,139 @@ ul {
    Coaching section
 ========================= */
 
+/* =========================
+   About section + intro video
+========================= */
+
+.about-layout {
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 70px;
+    align-items: center;
+}
+
+.about-content h2,
+.about-content p {
+    max-width: 620px;
+}
+
+.about-content p:last-child {
+    margin-bottom: 0;
+}
+
+.about-video {
+    margin: 0;
+    margin-left: auto;
+    width: 100%;
+    max-width: 340px;
+}
+
+.video-frame {
+    position: relative;
+    overflow: hidden;
+
+    border: 1px solid var(--border-grey);
+    background: var(--card-grey);
+    box-shadow: 0 24px 70px rgba(0, 0, 0, 0.45);
+}
+
+.video-frame::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 3;
+
+    width: 100%;
+    height: 4px;
+
+    background: var(--red);
+    pointer-events: none;
+}
+
+.video-frame video {
+    display: block;
+    width: 100%;
+    height: auto;
+
+    aspect-ratio: 9 / 16;
+    background: var(--black);
+}
+
+/* Branded play overlay. Hidden once playback starts, and hidden
+   entirely if JavaScript is unavailable so the native controls
+   remain the only affordance. */
+
+.video-play {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+
+    display: none;
+    align-items: center;
+    justify-content: center;
+
+    padding: 0;
+    border: 0;
+    cursor: pointer;
+
+    background: rgba(8, 8, 8, 0.35);
+    transition: background 0.25s ease;
+}
+
+.video-play.is-visible {
+    display: flex;
+}
+
+.video-play:hover {
+    background: rgba(8, 8, 8, 0.15);
+}
+
+.video-play:focus-visible {
+    outline: 3px solid var(--red);
+    outline-offset: -3px;
+}
+
+.video-play-icon {
+    width: 72px;
+    height: 72px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+    background: var(--red);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+    transition: transform 0.25s ease, background 0.25s ease;
+}
+
+.video-play-icon::after {
+    content: "";
+
+    width: 0;
+    height: 0;
+    margin-left: 6px;
+
+    border-top: 13px solid transparent;
+    border-bottom: 13px solid transparent;
+    border-left: 21px solid var(--white);
+}
+
+.video-play:hover .video-play-icon {
+    transform: scale(1.08);
+    background: var(--dark-red);
+}
+
+.about-video figcaption {
+    margin-top: 14px;
+
+    color: #777777;
+    font-size: 0.82rem;
+    letter-spacing: 0.04em;
+    text-align: center;
+}
+
 .section-dark {
     background: var(--dark-grey);
     border-top: 1px solid var(--border-grey);
@@ -565,6 +698,17 @@ ul {
         padding-bottom: 90px;
     }
 
+    .about-layout {
+        grid-template-columns: 1fr;
+        gap: 45px;
+    }
+
+    .about-video {
+        margin-right: auto;
+        margin-left: auto;
+        max-width: 320px;
+    }
+
     .services-grid {
         grid-template-columns: 1fr;
     }
@@ -631,6 +775,15 @@ ul {
 
     .hero h1 {
         font-size: 3.5rem;
+    }
+
+    .about-video {
+        max-width: 100%;
+    }
+
+    .video-play-icon {
+        width: 62px;
+        height: 62px;
     }
 
     .hero-description {

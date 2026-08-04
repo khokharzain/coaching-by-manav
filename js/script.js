@@ -23,4 +23,33 @@ document.addEventListener("DOMContentLoaded", () => {
             });
         }
     }
+
+    // Branded play overlay for the introduction video.
+    //
+    // The overlay starts hidden in CSS and is only revealed here, so if
+    // JavaScript fails to run the visitor still gets the native video
+    // controls rather than an unclickable button covering the poster.
+    const introVideo = document.querySelector("#intro-video");
+    const introPlayButton = document.querySelector("#intro-video-play");
+
+    if (introVideo && introPlayButton) {
+        introPlayButton.classList.add("is-visible");
+
+        const hideOverlay = () => {
+            introPlayButton.classList.remove("is-visible");
+        };
+
+        introPlayButton.addEventListener("click", () => {
+            const started = introVideo.play();
+
+            // Safari returns undefined rather than a promise.
+            if (started && typeof started.catch === "function") {
+                started.catch(hideOverlay);
+            }
+        });
+
+        // Hide on play rather than on click, so the overlay stays put
+        // if playback is blocked for any reason.
+        introVideo.addEventListener("play", hideOverlay);
+    }
 });
