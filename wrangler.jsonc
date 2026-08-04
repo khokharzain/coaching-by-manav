@@ -1,0 +1,27 @@
+{
+    // Cloudflare Workers configuration for the Coaching by Manav website.
+    //
+    // This Worker serves static assets only — there is no server-side code,
+    // so there is no "main" entry point. Cloudflare serves index.html, the
+    // CSS, the JavaScript and the images directly from the edge.
+    //
+    // Deploy manually with:  npx wrangler deploy
+    // Or let Cloudflare Workers Builds deploy automatically on every push.
+
+    "name": "coaching-by-manav-preview",
+    "compatibility_date": "2026-08-04",
+
+    "assets": {
+        // Serve everything from the repository root.
+        // Files listed in .assetsignore are excluded from the upload.
+        "directory": "./",
+
+        // Serves /about as /about.html and adds trailing slashes.
+        // Matches the setting used for the original dashboard upload.
+        "html_handling": "auto-trailing-slash",
+
+        // Single-page site: unknown paths return a plain 404
+        // rather than being rewritten to index.html.
+        "not_found_handling": "none"
+    }
+}

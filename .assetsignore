@@ -1,0 +1,17 @@
+# Files in this repository that must NOT be uploaded to Cloudflare
+# or served publicly from the website.
+#
+# Uses .gitignore syntax.
+
+.git
+.gitignore
+.assetsignore
+wrangler.jsonc
+node_modules
+
+# Documentation lives in the repo, not on the live site
+*.md
+
+# macOS artefacts
+.DS_Store
+._*
