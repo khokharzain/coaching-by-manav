@@ -58,7 +58,7 @@ CoachingByManav/
 │   ├── social-preview.jpg # 1200x630 Open Graph card
 │   └── manav-intro-poster.jpg # Still frame shown before the video plays
 ├── video/
-│   └── manav-intro.mp4   # Introduction video, H.264, 55s
+│   └── manav-intro.mp4   # Introduction video, H.264 720p, 15s
 ├── wrangler.jsonc        # Cloudflare Worker configuration
 ├── .assetsignore         # Files excluded from the deployed site
 └── README.md
@@ -166,19 +166,24 @@ config and macOS artefacts. The live site therefore only receives
 
 ### Video encoding
 
-The source clip was 110 MB of 12.9 Mbps HEVC, which exceeds Cloudflare's
-25 MiB per-file asset limit and is not reliably playable outside Safari.
-It is re-encoded to H.264 at CRF 27 with `+faststart`, bringing it to
-5.4 MB while remaining visually identical at this resolution:
+The source clip is a 46 MB iPhone recording: 1080p60 at 22.7 Mbps, carrying
+a spatial-audio track and several metadata streams alongside the stereo
+audio. It is downscaled to 720p30 and re-encoded at CRF 25, mapping only
+the stereo track, which brings it to 4.0 MB with no visible loss at the
+size it is displayed:
 
 ```bash
-ffmpeg -i source.MP4 -t 55 \
-  -vf "fade=t=out:st=54.4:d=0.6" \
-  -c:v libx264 -preset slow -crf 27 -pix_fmt yuv420p \
+ffmpeg -i IMG_9346.mov \
+  -map 0:v:0 -map 0:a:0 \
+  -vf "scale=1280:720:flags=lanczos,fps=30,fade=t=out:st=14.7:d=0.5" \
+  -c:v libx264 -preset slow -crf 25 -pix_fmt yuv420p \
   -movflags +faststart \
-  -af "afade=t=out:st=54.4:d=0.6" -c:a aac -b:a 96k \
+  -af "afade=t=out:st=14.7:d=0.5" -c:a aac -b:a 128k -ac 2 \
   video/manav-intro.mp4
 ```
+
+The explicit `-map` flags matter: without them ffmpeg picks up the extra
+audio and data streams, producing a file some browsers refuse to play.
 
 The `<video>` element uses `preload="none"`, so the file is only fetched
 once a visitor presses play and costs nothing on initial page load.
