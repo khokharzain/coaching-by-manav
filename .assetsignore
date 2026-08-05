@@ -9,8 +9,10 @@
 wrangler.jsonc
 node_modules
 
-# Documentation lives in the repo, not on the live site
+# Documentation and brand assets live in the repo, not on the live site
 *.md
+docs/
+brand/
 
 # macOS artefacts
 .DS_Store
