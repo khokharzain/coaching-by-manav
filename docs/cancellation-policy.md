@@ -14,20 +14,21 @@ needs to appear in both places.
 ```text
 CANCELLATION AND RESCHEDULING
 
-A deposit of 20% of the session fee confirms your booking. The remaining
-80% is paid at the session itself.
+Phone consultations are paid in full when you book. In-person sessions
+take a 20% deposit to confirm the time, with the remaining 80% paid at the
+session.
 
 More than 24 hours before your session
 Reschedule yourself through your booking confirmation email, at no cost.
-To cancel outright, message or email Manav and your deposit will be
-refunded in full.
+To cancel outright, message or email Manav and you will be refunded in
+full.
 
 Less than 24 hours before your session
-The deposit is retained. Time reserved at short notice usually cannot be
-offered to anyone else, and the deposit covers that cost.
+The amount paid is retained. Time reserved at short notice usually cannot
+be offered to anyone else, and this covers that cost.
 
 If you do not attend
-The deposit is retained, on the same basis as a cancellation inside
+The amount paid is retained, on the same basis as a cancellation inside
 24 hours.
 
 If Manav cancels or reschedules
@@ -46,7 +47,7 @@ YOUR RIGHTS
 Nothing in this policy limits your rights under the Australian Consumer
 Law. You are entitled to a remedy if a service is not delivered with due
 care and skill, does not match its description, or is not fit for its
-stated purpose. A deposit is retained only to cover the reasonable cost of
+stated purpose. Payment is retained only to cover the reasonable cost of
 time set aside and not filled — never as a penalty.
 ```
 
@@ -92,20 +93,37 @@ lawyer first.
 
 ---
 
-## Deposit amount
+## Payment model
 
-The deposit is 20% of the session fee, with the balance paid at the
-session.
+Two different arrangements, set per service in Square.
 
-At a $60 session that is $12, which is a workable figure. It is large
-enough to give a client a reason to turn up or give notice, and small
-enough that the fixed component of the card processing fee — roughly 30
-cents — stays a minor share of it. A 10% deposit was considered first, but
-$6 is not a meaningful deterrent to a no-show and the fixed fee eats a
-larger proportion of it.
+| Service | Taken at booking |
+| --- | --- |
+| Phone consultation, $25 | 100% — paid in full |
+| In-person sessions | 20% deposit, balance at the session |
 
-Because the deposit is a percentage, it scales automatically if session
-pricing changes, so this policy does not need revisiting when rates move.
+Remote services are prepaid because there is no checkout at the end of a
+phone call. A 20% deposit on a $25 consultation would leave $20 to be
+chased by invoice or bank transfer after every call, which is more
+administration than the service is worth and the kind of balance that
+quietly goes uncollected.
+
+In-person sessions keep the 20% deposit, because the balance can simply be
+taken at the gym.
+
+Because the in-person figure is a percentage, it scales automatically if
+session pricing changes and will not need revisiting when rates move.
+
+### Configuring this in Square
+
+Square applies deposits per service, so both models can coexist:
+
+1. Appointments → Settings → Payments & cancellations
+2. Click the current policy → **Require a deposit**
+3. Choose **Specific services**, not All services
+4. Phone consultation → **100%** (if Square will not accept 100 as a
+   percentage, set a fixed amount of $25 instead)
+5. In-person sessions → **20%**
 
 ## Square limitation worth knowing
 
@@ -122,9 +140,11 @@ automated Square notification.
 
 ## Before the first deposit is taken
 
-- [ ] Set the deposit to 20% of the service price in Square.
-      Appointments → Settings → Payments → require a prepayment or
-      deposit, set as a percentage.
+- [ ] Set per-service deposits in Square: 100% on the phone
+      consultation, 20% on in-person sessions. Use **Specific services**
+      rather than All services.
+- [ ] Set the booking cut-off time to 24 hours, which is what actually
+      enforces the policy rather than merely describing it.
 - [ ] Paste the policy above into Square's cancellation policy field.
 - [ ] Confirm the website and Square wording match.
 - [ ] Keep a record of what each client agreed to at the time of booking.
