@@ -94,14 +94,60 @@ Send the booking flow URL over. The button in `index.html` already carries
 is a placeholder. Replacing the href activates it — no JavaScript change
 needed.
 
-### 5. Test before announcing
+### 5. Verify with a real test booking
 
-Book a real appointment as if you were a client:
+Square's setup progress bar is not a completeness check. It counts
+optional items — create a class, import a customer list, explore hardware
+— that will never be done here, so it will never reach 100%. Ignore it.
 
-- Confirm the deposit charges the right amount for each service
-- Confirm the confirmation email shows the gym address, not a home address
-- Confirm the logo and business name look right
-- Cancel and refund it afterwards
+The only reliable test is booking an appointment as a client would.
+
+**Do it in a private or incognito window**, otherwise you are logged in as
+the seller and will see a different flow to the one clients get.
+
+#### On the booking page
+
+- [ ] Business name reads Coaching By Manav, not Manav's fitness
+- [ ] Logo appears and is not stretched or cropped
+- [ ] All three services are listed with the right durations and prices
+- [ ] The address shown is the gym, not the home address
+- [ ] No slots are offered inside the next 24 hours — if they are, the
+      booking cut-off did not save
+- [ ] The cancellation policy is visible **before** the payment step, not
+      after. Australian Consumer Law requires disclosure before the client
+      commits.
+
+#### At payment
+
+Book the **$50 gym session** first, because it is the one that will show a
+misconfiguration:
+
+- [ ] The amount charged is **$10**, not $50. If it charges $50, the
+      deposit was set to All services instead of Specific services.
+
+Then book a **$25 call service**:
+
+- [ ] The amount charged is the full **$25**
+
+#### After booking
+
+- [ ] Confirmation email arrives
+- [ ] It shows the gym address, correct business name and the logo
+- [ ] It contains a reschedule link
+- [ ] The appointment appears on the Square calendar
+- [ ] The payment appears under Transactions
+
+#### Clean up
+
+- [ ] Cancel both test appointments and refund them
+- [ ] Confirm the refunds appear in Transactions
+
+#### A few days later
+
+- [ ] Check the money actually reached the bank account. Square holds the
+      first transfer from a new account longer than usual, so do not be
+      alarmed if it is not immediate — but do confirm it lands before
+      relying on it.
 
 ---
 
