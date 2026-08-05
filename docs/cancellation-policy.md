@@ -18,8 +18,9 @@ A deposit of 20% of the session fee confirms your booking. The remaining
 80% is paid at the session itself.
 
 More than 24 hours before your session
-Cancel or reschedule at no cost. Your deposit is refunded in full, or
-carried across to your new session — whichever you prefer.
+Reschedule yourself through your booking confirmation email, at no cost.
+To cancel outright, message or email Manav and your deposit will be
+refunded in full.
 
 Less than 24 hours before your session
 The deposit is retained. Time reserved at short notice usually cannot be
@@ -105,6 +106,19 @@ larger proportion of it.
 
 Because the deposit is a percentage, it scales automatically if session
 pricing changes, so this policy does not need revisiting when rates move.
+
+## Square limitation worth knowing
+
+Square's documentation states that once an appointment is booked with a
+deposit, "customers cannot cancel their own appointment. Appointments must
+be cancelled directly by the seller."
+
+Clients can still reschedule themselves before the cut-off time, but a
+cancellation has to come through Manav. The policy wording reflects this,
+so the website does not promise self-service cancellation that Square will
+not allow. It also means Manav needs to watch his email and Instagram
+messages for cancellation requests, since they will not arrive as an
+automated Square notification.
 
 ## Before the first deposit is taken
 
