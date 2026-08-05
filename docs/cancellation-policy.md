@@ -14,6 +14,9 @@ needs to appear in both places.
 ```text
 CANCELLATION AND RESCHEDULING
 
+A deposit of 20% of the session fee confirms your booking. The remaining
+80% is paid at the session itself.
+
 More than 24 hours before your session
 Cancel or reschedule at no cost. Your deposit is refunded in full, or
 carried across to your new session — whichever you prefer.
@@ -88,11 +91,26 @@ lawyer first.
 
 ---
 
+## Deposit amount
+
+The deposit is 20% of the session fee, with the balance paid at the
+session.
+
+At a $60 session that is $12, which is a workable figure. It is large
+enough to give a client a reason to turn up or give notice, and small
+enough that the fixed component of the card processing fee — roughly 30
+cents — stays a minor share of it. A 10% deposit was considered first, but
+$6 is not a meaningful deterrent to a no-show and the fixed fee eats a
+larger proportion of it.
+
+Because the deposit is a percentage, it scales automatically if session
+pricing changes, so this policy does not need revisiting when rates move.
+
 ## Before the first deposit is taken
 
-- [ ] Set the deposit amount in Square. A flat amount of roughly $10–$20 is
-      more common for personal training than a percentage, and is more
-      effective at deterring no-shows than 10% of a session fee.
+- [ ] Set the deposit to 20% of the service price in Square.
+      Appointments → Settings → Payments → require a prepayment or
+      deposit, set as a percentage.
 - [ ] Paste the policy above into Square's cancellation policy field.
 - [ ] Confirm the website and Square wording match.
 - [ ] Keep a record of what each client agreed to at the time of booking.
