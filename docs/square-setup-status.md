@@ -27,7 +27,7 @@ The booking section advertises introductory rates that rise on 1 November.
 | --- | --- | --- |
 | Fitness Consultation | $25 | $35 |
 | Eating Habits Support | $25 | $35 |
-| Gym Training Session | $50 | $70 |
+| Gym Training Session | $50 | $60 |
 
 **This has to actually happen.** The prices are framed as introductory
 with a stated future rate rather than as a discount off a struck-through
