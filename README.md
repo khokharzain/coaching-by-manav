@@ -34,10 +34,10 @@ being rebuilt in-house. Card details are never collected by this site.
 | --- | --- |
 | Markup | HTML5, semantic sections |
 | Styling | Hand-written CSS, custom properties, CSS Grid |
-| Scripting | Vanilla JavaScript (~25 lines) |
+| Scripting | Vanilla JavaScript, no dependencies |
 | Hosting | Cloudflare Workers Static Assets |
 | Deploys | Cloudflare Workers Builds, triggered by pushes to `main` |
-| Bookings | Square Appointments (pending configuration) |
+| Bookings | Square Appointments, connected and taking deposits |
 
 No build step. No dependencies. No `node_modules`.
 
@@ -51,7 +51,7 @@ CoachingByManav/
 ├── css/
 │   └── styles.css        # All styling, including responsive breakpoints
 ├── js/
-│   └── script.js         # Footer year, booking button, video, gallery, scroll UI
+│   └── script.js         # Booking button, video, gallery, scroll UI, footer year
 ├── images/
 │   ├── manav-hero.jpg    # Wide hero, 2560x1280
 │   ├── manav-hero-small.jpg # Upright hero for phones, 1000x1742
@@ -62,7 +62,9 @@ CoachingByManav/
 ├── video/
 │   └── manav-intro.mp4   # Introduction video, H.264 720p, 15s
 ├── docs/
-│   └── cancellation-policy.md # Policy text for Square, and the reasoning
+│   ├── cancellation-policy.md # Policy text for Square, and the reasoning
+│   └── square-setup-status.md # Square configuration, verified, and what remains
+├── brand/                # Logo variants for Square. Not deployed.
 ├── wrangler.jsonc        # Cloudflare Worker configuration
 ├── .assetsignore         # Files excluded from the deployed site
 └── README.md
@@ -167,10 +169,13 @@ config and macOS artefacts. The live site therefore only receives
 - Favicon, Open Graph and Twitter card metadata
 - Fitness and medical disclaimer
 - Introduction video in the About section, click to play
-- Auto-gliding photo gallery with a pause control
+- Photo gallery that glides automatically and responds to arrows, keys, drag and swipe
 - Scroll reveal animations and scrollspy navigation
 - Scroll progress line beneath the header
 - Cancellation and rescheduling policy, shown before the point of payment
+- Live Square booking with per-service deposits
+- Introductory pricing with a stated future rate
+- Travel area stated for in-person sessions
 
 ### Hero composition
 
@@ -192,21 +197,35 @@ brand accents still read against it.
 
 ### Gallery
 
-The strip contains the same six photographs twice inside a flex row that
-is animated by exactly `-50%` of its width. The second set therefore
-arrives in the first set's starting position and the loop repeats with no
-visible jump.
+The strip glides on its own and can also be driven by hand.
+
+It began as a CSS `transform` animation, which was the wrong architecture
+once manual controls were needed: a CSS animation cannot be nudged by a
+button, so the two would have fought each other. It is now a real scroll
+container advanced by script one animation frame at a time, which means
+the arrows, arrow keys, trackpad, drag and swipe all move the same
+element.
+
+The same six photographs appear twice, and the scroll position wraps at
+the halfway point where the second set sits exactly where the first began.
+The loop is therefore seamless in both directions, not just forwards.
 
 Slides use a fixed height and automatic width, so portrait and landscape
-shots sit together without cropping — which is also what keeps the film
-border on the gym floor photograph intact. The edges are feathered with a
-CSS mask so images enter and leave rather than being cut off.
+shots sit together without cropping — which is what keeps the film border
+on the gym floor photograph intact. The edges are feathered with a CSS
+mask so images enter and leave rather than being cut off.
 
-The animation is pure CSS and runs with scripting disabled. It pauses on
-hover and on keyboard focus, and there is an explicit pause button because
-continuously moving content needs a stop control and hover does not exist
-on touch screens. `prefers-reduced-motion` stops the animation entirely
-and makes the strip scrollable by hand instead.
+Two details make it behave rather than fight the visitor. Sub-pixel
+movement is carried between frames, because at 46px per second a single
+frame moves less than one pixel and `scrollLeft` rounds — without carrying
+the remainder the strip simply sits still. And the auto advance holds
+while a manual scroll settles, so the two are never writing to
+`scrollLeft` at the same time.
+
+It pauses on hover, drag, touch and keyboard focus, and there is an
+explicit pause button, since continuously moving content needs a stop
+control and hover does not exist on a touch screen.
+`prefers-reduced-motion` starts it paused with the arrows still working.
 
 ### Scroll progress line
 
@@ -216,6 +235,32 @@ which runs off the main thread and stays smooth under load. `script.js`
 checks for that same feature and only attaches a scroll handler when it is
 missing. The fallback batches into `requestAnimationFrame` and writes only
 a `transform`, so scrolling never triggers layout.
+
+### Introductory pricing
+
+The booking section shows current prices with the rate they rise to on
+1 November, rather than a struck-through former price.
+
+That framing is deliberate. A struck-through price is a claim that the
+higher amount was previously charged. Manav has never charged it, so
+presenting it that way would be a false reference price — misleading
+conduct under the Australian Consumer Law, and a current ACCC enforcement
+priority. Stating a *future* price keeps the same anchor and the same
+deadline while remaining true.
+
+It is only true while the rise is genuinely intended, so the date and both
+price tables are recorded in `docs/square-setup-status.md`.
+
+### Service icons
+
+The coaching cards use inline SVG rather than image files. No extra
+network requests, crisp at any pixel density, and the colour is inherited
+from CSS so the icons follow the brand and respond to hover rather than
+being fixed inside a bitmap.
+
+Stock photography was considered and rejected: the gallery is entirely
+real photographs of Manav, and generic stock imagery next to it tends to
+undermine both.
 
 ### Video encoding
 
@@ -243,8 +288,8 @@ once a visitor presses play and costs nothing on initial page load.
 
 **Pending**
 
-- Square Appointments configuration and the public booking URL
-- Service pricing, durations and packages
+- Test booking, to confirm behaviour matches the verified configuration
+- Custom domain, then removal of the `noindex` tag
 - Photo gallery — awaiting real training photographs
 - Testimonials, with client permission
 - FAQ section

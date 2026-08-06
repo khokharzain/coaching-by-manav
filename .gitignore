@@ -18,3 +18,8 @@ node_modules/
 
 # Private project documentation (not for the public repository)
 COACHING_BY_MANAV_COMPLETE_HANDOVER_README.md
+
+# Tooling artefacts, not project documentation
+AGENTS.md
+CLAUDE.md
+.claude/
