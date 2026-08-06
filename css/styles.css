@@ -512,19 +512,10 @@ ul {
 
 .gallery-heading {
     margin-bottom: 48px;
-
-    display: grid;
-    grid-template-columns: 1.1fr 0.9fr;
-    gap: 60px;
-    align-items: end;
 }
 
 .gallery-heading h2 {
     margin-bottom: 0;
-}
-
-.gallery-heading > p {
-    margin-bottom: 6px;
 }
 
 /* The strip fades out at both edges so photographs enter and leave
