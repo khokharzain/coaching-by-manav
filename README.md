@@ -9,6 +9,15 @@ Cloudflare Workers.
 > The site currently carries a `noindex, nofollow` tag while it is in preview.
 > This is removed at official launch.
 
+Further documentation lives in [`docs/`](docs/):
+
+- [`square-setup-status.md`](docs/square-setup-status.md) — Square
+  configuration verified against live booking data, the outstanding
+  launch items, and the refund procedure
+- [`cancellation-policy.md`](docs/cancellation-policy.md) — the policy
+  text used in Square, and why the requested terms were changed to stay
+  within the Australian Consumer Law
+
 ---
 
 ## Why no framework
@@ -300,36 +309,32 @@ once a visitor presses play and costs nothing on initial page load.
 
 ---
 
-## Booking integration
+## Booking and payments
 
-The booking button is intentionally inert until Square is configured.
-`js/script.js` detects a placeholder `href` and disables the link so it
-does not jump to the top of the page:
+Booking runs through Square Appointments. The site links out to Square's
+booking flow rather than embedding a form, so card details are never
+collected here and there is no payment code to maintain or secure.
 
-```javascript
-if (!bookingUrl || bookingUrl === "#") {
-    squareBookingLink.setAttribute("aria-disabled", "true");
-    squareBookingLink.addEventListener("click", (event) => {
-        event.preventDefault();
-    });
-}
-```
+| Service | Duration | Price | Taken at booking |
+| --- | --- | --- | --- |
+| Fitness Consultation | 30 min | $25 | 100% |
+| General Eating Habits Support | 30 min | $25 | 100% |
+| One-on-One Gym Training | 1 hr | $50 | 20% deposit |
 
-To activate it, replace the placeholder in `index.html`:
+Remote services are paid in full because a phone call has no checkout at
+the end; a 20% deposit would leave a balance to chase by invoice after
+every session. In-person sessions take the deposit, because the balance
+can be collected at the gym.
 
-```html
-<a
-    href="https://squareup.com/appointments/book/YOUR-BOOKING-URL"
-    class="button button-primary booking-button"
-    id="square-booking-link"
-    target="_blank"
-    rel="noopener noreferrer"
->
-    View Available Times
-</a>
-```
+The button in `index.html` carries `id="square-booking-link"`, and
+`js/script.js` disables it whenever the `href` is still the `#`
+placeholder. That guard is why the button could sit safely on the live
+site for weeks before Square was ready, and why connecting it needed no
+JavaScript change — only the `href`.
 
-No JavaScript changes are needed — the guard only fires on the placeholder.
+Full configuration, including what was verified against Square's live
+booking data and what remains, is in
+[`docs/square-setup-status.md`](docs/square-setup-status.md).
 
 ---
 
