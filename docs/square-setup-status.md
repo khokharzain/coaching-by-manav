@@ -19,6 +19,31 @@ While it is there, Google will not list the site at all. It exists so the
 preview stayed private during the build. Delete that line at launch, then
 submit the site to Google Search Console so it starts being indexed.
 
+### Raise prices on 1 November 2026
+
+The booking section advertises introductory rates that rise on 1 November.
+
+| Service | Introductory | From 1 November |
+| --- | --- | --- |
+| Fitness Consultation | $25 | $35 |
+| Eating Habits Support | $25 | $35 |
+| Gym Training Session | $50 | $70 |
+
+**This has to actually happen.** The prices are framed as introductory
+with a stated future rate rather than as a discount off a struck-through
+former price, because Manav has never charged the higher amount and
+presenting it as a past price would be a false reference price under the
+Australian Consumer Law. Misleading pricing is a current ACCC enforcement
+priority — HSK United paid $79,200 in June 2026, and in the Emma Sleep
+case 58 products had never sold at the strikethrough price at all.
+
+The framing is accurate only while the price rise is genuinely intended.
+If $25 is still the rate in November it has become the real price, and
+the claim goes stale.
+
+On 1 November, update **both** Square and the pricing block in
+`index.html`. They must not disagree.
+
 ### Run the test booking
 
 The full checklist is in "Verify with a real test booking" below. The short
