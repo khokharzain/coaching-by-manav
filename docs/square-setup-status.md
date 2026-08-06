@@ -186,10 +186,45 @@ Then book a **$25 call service**:
 - [ ] The appointment appears on the Square calendar
 - [ ] The payment appears under Transactions
 
+#### Who does what
+
+Book with **Zain's card**, and have **Manav process the refund**.
+
+Using Manav's own card on his own Square account is self-processing, which
+payment providers monitor. One small test is unlikely to matter, but a
+genuine third-party card is cleaner and actually exercises the real flow,
+including the confirmation email reaching a different inbox.
+
+Manav doing the refund matters more than it sounds. Because every service
+carries a deposit, clients cannot cancel their own appointments — every
+cancellation and refund will go through him. Better he does the first one
+as a test than as an apology.
+
 #### Clean up
 
 - [ ] Cancel both test appointments and refund them
 - [ ] Confirm the refunds appear in Transactions
+
+**How to refund.** Either route works:
+
+- **From the appointment** — Appointments → Calendar → the booking →
+  Cancel, or mark as no-show. Square offers the refund as part of that
+  action. This is the route Square's own deposit documentation describes.
+- **From Transactions** — Transactions → the payment → ••• → Issue Refund
+  → full amount → select a reason → confirm.
+
+**What to expect:**
+
+- **Processing fees are not returned.** Square states that when a payment
+  is refunded, the processing fees are not refunded to the seller. The
+  test therefore costs roughly 40–50c permanently.
+- **Refunds are slow.** Square takes 2–7 business days, then the card
+  issuer takes another 2–7. Up to 14 business days in total.
+- **Refunds cannot be cancelled.** Square is explicit about this. Check
+  the amount before confirming.
+- **Where the money comes from:** if the Square balance covers the refund
+  it is deducted there; if the funds have already been transferred out,
+  the linked bank account is debited instead.
 
 #### A few days later
 
