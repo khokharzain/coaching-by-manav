@@ -219,8 +219,24 @@ The brand colour is Square's default green rather than the site's red, and
 the uploaded logo did not persist. This affects the appearance of receipts,
 invoices and the booking flow, not their function.
 
-To fix: Settings → Account & Settings → Business → Branding. Upload
-`brand/logo-square-512.png` and set the colour to `e50914`.
+To fix: Locations → the location → Branding → pencil. Square asks for two
+images and a colour.
+
+| Field | File | Size |
+| --- | --- | --- |
+| Full logo | `brand/square-full-logo.png` | 1600x400 |
+| Small logo | `brand/square-small-logo.png` | 1024x1024 |
+| Colour | `e50914` | — |
+
+Both are transparent PNGs with dark text and a red accent, because Square
+renders these on receipts and invoices, which are white. A logo with a
+black background would appear as a dark slab on the page.
+
+The consequence is that the full wordmark is close to invisible on a dark
+surface. That is the correct trade for Square, whose customer-facing
+surfaces are light. `brand/logo-wordmark.png` and `brand/logo-square-*.png`
+remain in the repo as the dark-background versions if a dark surface ever
+needs one.
 
 ---
 
