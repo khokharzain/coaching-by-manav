@@ -151,68 +151,52 @@ Then book a **$25 call service**:
 
 ---
 
-## Fixes needed — found by reading the live booking page config
+## Configuration verified against the live booking data
 
-The booking flow URL exposes the full configuration, which confirmed most
-settings are correct: business name, Brisbane timezone, public email,
-deposits at 100/100/20, and both the cancellation and refund policies
-saved and set to display.
+The booking flow URL returns the full widget configuration, so the setup
+can be checked without making a test booking. Verified 5 August 2026.
 
-Four things were wrong.
+| Setting | Value | Status |
+| --- | --- | --- |
+| Business name | Coaching by Manav | ok |
+| Timezone | Australia/Brisbane | ok |
+| Public email | manavfitness.stop@gmail.com | ok |
+| GST | `fees: []` | removed |
+| Deposits enabled | true, percentage | ok |
+| Consultation deposit | 100% | ok |
+| Eating Habits deposit | 100% | ok |
+| Gym Session deposit | 20% | ok |
+| Minimum booking notice | `cutoff_time: 86400` = 24h | ok |
+| Cancellation cut-off | `no_show_cutoff_time: 86400` = 24h | ok |
+| Booking window | `future_booking_limit_time: 5184000` = 60 days | ok |
+| Confirmation email | true | ok |
+| Confirmation SMS | true | ok |
+| Cancellation policy | present, `display_cancellation_policy: true` | ok |
+| Refund policy | present | ok |
+| Brand colour | `30d443`, Square default green | outstanding |
+| Logo | `logos: null` | outstanding |
 
-### GST is applied to all three services
+### How GST was removed
 
-Every service carries a 10% inclusive GST fee. At $3–4k annual turnover
-Manav is far below the $75k GST registration threshold, so this is
-probably a default that should not be on. Charging GST while unregistered
-is not permitted; charging it while registered creates an obligation to
-remit it.
+The Edit tax panel has no disable control. The tax was neutralised by
+opening Settings → Account & Settings → Payment → Sales taxes → GST and
+setting **Locations** to **No locations**. A tax attached to no location
+applies to nothing.
 
-**Fix:** Settings → Account & Settings → Payment → Sales taxes → select
-GST → Actions → **Disable tax**. Disable rather than delete, since
-deletion cannot be undone.
+This is reversible: re-tick the location if Manav ever registers for GST.
 
-Because the tax is inclusive, disabling it does not change what clients
-pay. Prices stay at $25 and $50.
+`is_taxable: true` remains on each service, which is expected. It marks
+the service as taxable in principle; with no tax rule attached to the
+location, `fee_ids` is empty and nothing is charged.
 
-This is not tax advice. Manav's registration status should be confirmed
-against the ABN Lookup or with his accountant.
+### Outstanding — cosmetic only
 
-### Confirmation emails are switched off
+The brand colour is Square's default green rather than the site's red, and
+the uploaded logo did not persist. This affects the appearance of receipts,
+invoices and the booking flow, not their function.
 
-`send_confirmation_email: false`, with only SMS enabled. The published
-cancellation policy tells clients to reschedule through their booking
-confirmation email. If no email is sent, that instruction is broken and
-they have no reschedule link.
-
-**Fix:** Appointments → Settings → Communications → enable confirmation
-emails.
-
-### Booking cut-off is zero
-
-`cutoff_time: 0`. A client can book a slot minutes away. The 24 hours
-already set is `no_show_cutoff_time`, which governs cancellation, not
-booking notice.
-
-**Fix:** Settings → Calendar & booking → set a minimum booking notice.
-
-### Branding did not save
-
-`seller_brand.colors.primary` is `30d443`, Square's default green, and
-`logos` is null. The uploaded logo did not persist and the brand colour is
-not the site's red.
-
-**Fix:** re-upload `brand/logo-square-512.png` and set the brand colour to
-`e50914`.
-
-### Lower priority
-
-- `future_booking_limit_time` is 31536000 seconds, a full year. Someone
-  can book a session twelve months out. 30–60 days is more usual.
-- The location returns an empty street address. Good for privacy, but
-  clients booking an in-person session are not told where to go. The
-  address needs to reach them somehow, whether through the confirmation
-  email or a message from Manav.
+To fix: Settings → Account & Settings → Business → Branding. Upload
+`brand/logo-square-512.png` and set the colour to `e50914`.
 
 ---
 
