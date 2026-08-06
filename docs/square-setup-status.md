@@ -7,6 +7,30 @@ up from "Remaining".
 
 ---
 
+## Deferred — must happen before launch
+
+Two things deliberately left until later. Neither blocks anything now, but
+both must be done before the site is promoted anywhere.
+
+### Remove the noindex tag
+
+`index.html` line 10 carries `<meta name="robots" content="noindex, nofollow">`.
+While it is there, Google will not list the site at all. It exists so the
+preview stayed private during the build. Delete that line at launch, then
+submit the site to Google Search Console so it starts being indexed.
+
+### Run the test booking
+
+The full checklist is in "Verify with a real test booking" below. The short
+version: incognito window, book the $50 gym session, confirm it charges
+**$10** and that no slots appear inside 24 hours, then cancel and refund.
+
+The configuration has been verified against the live data and is correct,
+but configuration and behaviour are not the same thing. Better to find a
+surprise before a client does.
+
+---
+
 ## Decisions locked in
 
 | Decision | Value |
