@@ -94,26 +94,184 @@ document.addEventListener("DOMContentLoaded", () => {
         drawProgress();
     }
 
-    // Gallery pause control.
+    // Gallery: automatic glide with manual control.
     //
-    // The strip glides via a CSS animation, so it works with scripting
-    // disabled. This only adds the ability to stop it, which continuously
-    // moving content needs — hovering is not available on a touch screen.
-    const galleryMarquee = document.querySelector("#gallery-marquee");
+    // The strip holds the same photographs twice. It advances by nudging
+    // scrollLeft each animation frame, and wraps at the halfway point,
+    // where the second set sits exactly where the first began — so the
+    // loop never visibly restarts.
+    //
+    // Driving a real scroll container rather than a CSS transform means
+    // the arrows, a trackpad, a drag and a swipe all move the same thing.
+    const galleryViewport = document.querySelector("#gallery-viewport");
+    const galleryPrev = document.querySelector("#gallery-prev");
+    const galleryNext = document.querySelector("#gallery-next");
     const galleryToggle = document.querySelector("#gallery-toggle");
 
-    if (galleryMarquee && galleryToggle) {
-        const toggleText = galleryToggle.querySelector(".gallery-toggle-text");
+    if (galleryViewport) {
+        const PIXELS_PER_SECOND = 46;
 
-        galleryToggle.addEventListener("click", () => {
-            const paused = galleryMarquee.classList.toggle("is-paused");
+        const reduceMotion = window.matchMedia(
+            "(prefers-reduced-motion: reduce)"
+        ).matches;
 
-            galleryToggle.setAttribute("aria-pressed", String(paused));
+        let paused = reduceMotion;
+        let pointerHeld = false;
+        let resumeTimer = null;
+        let lastFrame = null;
+        let carry = 0;
 
-            if (toggleText) {
-                toggleText.textContent = paused ? "Play" : "Pause";
+        const halfWidth = () => galleryViewport.scrollWidth / 2;
+
+        // Keep the position inside the first copy. Because the second copy
+        // is identical, the jump is invisible.
+        const wrap = () => {
+            const half = halfWidth();
+            if (half <= 0) return;
+
+            if (galleryViewport.scrollLeft >= half) {
+                galleryViewport.scrollLeft -= half;
+            } else if (galleryViewport.scrollLeft < 0) {
+                galleryViewport.scrollLeft += half;
+            }
+        };
+
+        const step = (timestamp) => {
+            if (lastFrame === null) lastFrame = timestamp;
+            const elapsed = (timestamp - lastFrame) / 1000;
+            lastFrame = timestamp;
+
+            if (!paused && !pointerHeld && elapsed < 0.5) {
+                // Sub-pixel movement is carried between frames, otherwise
+                // rounding stalls the strip at slow speeds.
+                carry += PIXELS_PER_SECOND * elapsed;
+                const whole = Math.floor(carry);
+
+                if (whole > 0) {
+                    carry -= whole;
+                    galleryViewport.scrollLeft += whole;
+                    wrap();
+                }
+            }
+
+            window.requestAnimationFrame(step);
+        };
+
+        window.requestAnimationFrame(step);
+
+        // Hold the auto advance while a manual scroll settles, so the two
+        // are never fighting over the same property.
+        const holdThenResume = (ms) => {
+            paused = true;
+            window.clearTimeout(resumeTimer);
+
+            resumeTimer = window.setTimeout(() => {
+                if (!reduceMotion && !galleryViewport.dataset.userPaused) {
+                    paused = false;
+                }
+                lastFrame = null;
+            }, ms);
+        };
+
+        const nudge = (direction) => {
+            const slide = galleryViewport.querySelector(".gallery-slide");
+            const distance = slide
+                ? slide.getBoundingClientRect().width + 18
+                : galleryViewport.clientWidth * 0.7;
+
+            wrap();
+            galleryViewport.scrollBy({
+                left: direction * distance,
+                behavior: "smooth"
+            });
+            holdThenResume(900);
+        };
+
+        if (galleryPrev && galleryNext) {
+            galleryPrev.classList.add("is-visible");
+            galleryNext.classList.add("is-visible");
+
+            galleryPrev.addEventListener("click", () => nudge(-1));
+            galleryNext.addEventListener("click", () => nudge(1));
+        }
+
+        galleryViewport.addEventListener("keydown", (event) => {
+            if (event.key === "ArrowRight") {
+                event.preventDefault();
+                nudge(1);
+            }
+
+            if (event.key === "ArrowLeft") {
+                event.preventDefault();
+                nudge(-1);
             }
         });
+
+        // Pause while the visitor is looking, dragging or tabbed in.
+        galleryViewport.addEventListener("pointerenter", () => {
+            if (!galleryViewport.dataset.userPaused) paused = true;
+        });
+
+        galleryViewport.addEventListener("pointerleave", () => {
+            pointerHeld = false;
+            if (!reduceMotion && !galleryViewport.dataset.userPaused) {
+                paused = false;
+                lastFrame = null;
+            }
+        });
+
+        galleryViewport.addEventListener("pointerdown", () => {
+            pointerHeld = true;
+        });
+
+        window.addEventListener("pointerup", () => {
+            pointerHeld = false;
+            wrap();
+        });
+
+        galleryViewport.addEventListener("focusin", () => {
+            paused = true;
+        });
+
+        galleryViewport.addEventListener("touchstart", () => {
+            pointerHeld = true;
+        }, { passive: true });
+
+        galleryViewport.addEventListener("touchend", () => {
+            pointerHeld = false;
+            holdThenResume(1200);
+        });
+
+        // Explicit pause control. Continuously moving content needs one,
+        // and hovering does not exist on a touch screen.
+        if (galleryToggle) {
+            const toggleText =
+                galleryToggle.querySelector(".gallery-toggle-text");
+
+            if (reduceMotion) {
+                galleryToggle.setAttribute("aria-pressed", "true");
+                galleryViewport.dataset.userPaused = "true";
+                if (toggleText) toggleText.textContent = "Play";
+            }
+
+            galleryToggle.addEventListener("click", () => {
+                const nowPaused = !galleryViewport.dataset.userPaused;
+
+                if (nowPaused) {
+                    galleryViewport.dataset.userPaused = "true";
+                    paused = true;
+                } else {
+                    delete galleryViewport.dataset.userPaused;
+                    paused = false;
+                    lastFrame = null;
+                }
+
+                galleryToggle.setAttribute("aria-pressed", String(nowPaused));
+                if (toggleText) {
+                    toggleText.textContent = nowPaused ? "Play" : "Pause";
+                }
+            });
+        }
     }
 
     // Reveal sections as they scroll into view.

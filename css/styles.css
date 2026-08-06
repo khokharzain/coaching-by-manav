@@ -523,7 +523,6 @@ ul {
 
 .gallery-carousel {
     position: relative;
-    overflow: hidden;
 
     -webkit-mask-image: linear-gradient(
         90deg,
@@ -542,34 +541,35 @@ ul {
     );
 }
 
-/* Two identical tracks sit side by side. Translating the pair by exactly
-   half its width brings the second set into the first set's starting
-   position, so the loop repeats with no visible jump. */
+/* A real scroll container rather than a CSS animation. The strip is
+   advanced by script, which means the same element responds to the
+   arrows, a trackpad, a drag and a swipe. */
+
+.gallery-viewport {
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    -webkit-overflow-scrolling: touch;
+}
+
+.gallery-viewport::-webkit-scrollbar {
+    display: none;
+}
+
+.gallery-viewport:focus-visible {
+    outline: 3px solid var(--red);
+    outline-offset: 4px;
+}
+
+/* Two identical tracks side by side. Script wraps the scroll position
+   at the halfway point, where the second set sits exactly where the
+   first began, so the loop never visibly restarts. */
 
 .gallery-marquee {
     display: flex;
     width: max-content;
-
-    animation: gallery-glide 80s linear infinite;
-}
-
-.gallery-carousel:hover .gallery-marquee,
-.gallery-carousel:focus-within .gallery-marquee {
-    animation-play-state: paused;
-}
-
-.gallery-marquee.is-paused {
-    animation-play-state: paused;
-}
-
-@keyframes gallery-glide {
-    from {
-        transform: translateX(0);
-    }
-
-    to {
-        transform: translateX(-50%);
-    }
 }
 
 .gallery-track {
@@ -592,10 +592,75 @@ ul {
 
     filter: grayscale(0.25);
     transition: filter 0.4s ease;
+
+    -webkit-user-drag: none;
+    user-select: none;
 }
 
 .gallery-slide img:hover {
     filter: grayscale(0);
+}
+
+/* Arrows sit over the faded edges. Hidden until script reveals them. */
+
+.gallery-arrow {
+    position: absolute;
+    top: 220px;
+    z-index: 5;
+
+    width: 52px;
+    height: 52px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+
+    border: 1px solid var(--border-grey);
+    border-radius: 50%;
+    background: rgba(8, 8, 8, 0.85);
+    backdrop-filter: blur(6px);
+    cursor: pointer;
+
+    transform: translateY(-50%);
+    transition: background 0.2s ease, border-color 0.2s ease;
+}
+
+.gallery-arrow.is-visible {
+    display: flex;
+}
+
+.gallery-arrow:hover {
+    background: var(--red);
+    border-color: var(--red);
+}
+
+.gallery-arrow:focus-visible {
+    outline: 3px solid var(--red);
+    outline-offset: 3px;
+}
+
+.gallery-arrow span {
+    width: 11px;
+    height: 11px;
+    border-top: 2px solid var(--white);
+    border-right: 2px solid var(--white);
+}
+
+.gallery-arrow-prev {
+    left: max(16px, calc((100% - 1120px) / 2 - 26px));
+}
+
+.gallery-arrow-prev span {
+    margin-left: 4px;
+    transform: rotate(-135deg);
+}
+
+.gallery-arrow-next {
+    right: max(16px, calc((100% - 1120px) / 2 - 26px));
+}
+
+.gallery-arrow-next span {
+    margin-right: 4px;
+    transform: rotate(45deg);
 }
 
 .gallery-controls {
@@ -1189,15 +1254,8 @@ ul {
         transition: none;
     }
 
-    /* Stop the gallery gliding, and let it be scrolled by hand instead. */
-
-    .gallery-marquee {
-        animation: none;
-    }
-
-    .gallery-carousel {
-        overflow-x: auto;
-    }
+    /* The auto advance is disabled in script; the arrows and manual
+       scrolling still work. */
 
     .button:hover,
     .service-card:hover {

@@ -263,7 +263,14 @@
             -->
 
             <div class="gallery-carousel">
-                <div class="gallery-marquee" id="gallery-marquee">
+                <div
+                    class="gallery-viewport"
+                    id="gallery-viewport"
+                    tabindex="0"
+                    role="region"
+                    aria-label="Training photographs, scrollable"
+                >
+                    <div class="gallery-marquee" id="gallery-marquee">
                     <div class="gallery-track">
                     <div class="gallery-slide">
                         <img
@@ -399,7 +406,35 @@
                         >
                     </div>
                     </div>
+                    </div>
                 </div>
+
+                <!--
+                    Manual controls. The strip glides on its own, but these
+                    let a visitor take over and step through at their pace.
+                    Revealed by script only, so they never appear as dead
+                    buttons if JavaScript fails.
+                -->
+
+                <button
+                    type="button"
+                    class="gallery-arrow gallery-arrow-prev"
+                    id="gallery-prev"
+                    aria-controls="gallery-viewport"
+                    aria-label="Show previous photographs"
+                >
+                    <span aria-hidden="true"></span>
+                </button>
+
+                <button
+                    type="button"
+                    class="gallery-arrow gallery-arrow-next"
+                    id="gallery-next"
+                    aria-controls="gallery-viewport"
+                    aria-label="Show next photographs"
+                >
+                    <span aria-hidden="true"></span>
+                </button>
             </div>
 
             <div class="gallery-controls">
