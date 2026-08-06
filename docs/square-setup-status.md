@@ -151,6 +151,71 @@ Then book a **$25 call service**:
 
 ---
 
+## Fixes needed — found by reading the live booking page config
+
+The booking flow URL exposes the full configuration, which confirmed most
+settings are correct: business name, Brisbane timezone, public email,
+deposits at 100/100/20, and both the cancellation and refund policies
+saved and set to display.
+
+Four things were wrong.
+
+### GST is applied to all three services
+
+Every service carries a 10% inclusive GST fee. At $3–4k annual turnover
+Manav is far below the $75k GST registration threshold, so this is
+probably a default that should not be on. Charging GST while unregistered
+is not permitted; charging it while registered creates an obligation to
+remit it.
+
+**Fix:** Settings → Account & Settings → Payment → Sales taxes → select
+GST → Actions → **Disable tax**. Disable rather than delete, since
+deletion cannot be undone.
+
+Because the tax is inclusive, disabling it does not change what clients
+pay. Prices stay at $25 and $50.
+
+This is not tax advice. Manav's registration status should be confirmed
+against the ABN Lookup or with his accountant.
+
+### Confirmation emails are switched off
+
+`send_confirmation_email: false`, with only SMS enabled. The published
+cancellation policy tells clients to reschedule through their booking
+confirmation email. If no email is sent, that instruction is broken and
+they have no reschedule link.
+
+**Fix:** Appointments → Settings → Communications → enable confirmation
+emails.
+
+### Booking cut-off is zero
+
+`cutoff_time: 0`. A client can book a slot minutes away. The 24 hours
+already set is `no_show_cutoff_time`, which governs cancellation, not
+booking notice.
+
+**Fix:** Settings → Calendar & booking → set a minimum booking notice.
+
+### Branding did not save
+
+`seller_brand.colors.primary` is `30d443`, Square's default green, and
+`logos` is null. The uploaded logo did not persist and the brand colour is
+not the site's red.
+
+**Fix:** re-upload `brand/logo-square-512.png` and set the brand colour to
+`e50914`.
+
+### Lower priority
+
+- `future_booking_limit_time` is 31536000 seconds, a full year. Someone
+  can book a session twelve months out. 30–60 days is more usual.
+- The location returns an empty street address. Good for privacy, but
+  clients booking an in-person session are not told where to go. The
+  address needs to reach them somehow, whether through the confirmation
+  email or a message from Manav.
+
+---
+
 ## Still open
 
 **Workout Guidance & Accountability** is advertised on the website but has
