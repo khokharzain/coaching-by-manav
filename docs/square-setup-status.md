@@ -277,8 +277,45 @@ things that occupy a time slot. If it is a written programme or ongoing
 check-ins over weeks, it is not an appointment and belongs as a Square
 payment link or subscription instead.
 
-**No travel radius is set.** Nothing stops someone an hour away booking an
-in-person session. Consider naming the suburbs Manav will travel to.
+**Travel area — update the Square service description.**
+
+Manav travels Brisbane's northern suburbs: Caboolture in the north down to
+Brisbane City, and not out to the far western suburbs. His base is North
+Lakes, so this is roughly the northern corridor either side of the Bruce
+Highway.
+
+This is now on the website, in the coaching card and in the price card
+meta. It still needs adding to the Square service description, so the
+limit appears at the point of booking as well.
+
+Replace the description on **One-On-One Gym Training Session** with:
+
+```text
+A one hour one-on-one training session, built around what you're
+working towards.
+
+Sessions focus on technique, steady and safe progression, and building a
+routine you can hold to on the days you train alone. Suitable whether
+you're new to the gym, coming back after time away, or training
+regularly without seeing the progress you expect.
+
+WHERE MANAV TRAVELS
+Brisbane's northern suburbs, from Caboolture in the north down to
+Brisbane City. Not further north than Caboolture, and not out to the far
+western suburbs. If you are unsure whether you are in range, message
+Manav before booking.
+
+WHERE YOU TRAIN
+If you'd like Manav to train you at your own gym, please arrange a guest
+day pass for him with your gym before the session. Most gyms offer
+these, and the cost of the pass is covered by you.
+
+A 20% deposit confirms your booking. The remaining balance is paid at
+the session.
+
+This is general fitness guidance and accountability coaching. It is not
+medical, physiotherapy, injury rehabilitation or dietetic advice.
+```
 
 **Square's cancellation limitation.** Once an appointment carries a
 deposit, clients cannot cancel it themselves — Square requires the seller
