@@ -773,6 +773,30 @@ ul {
     box-shadow: 0 18px 45px rgba(0, 0, 0, 0.3);
 }
 
+/* Inline SVG rather than image files: no extra requests, perfectly
+   crisp at any size, and the colour is inherited so it follows the
+   brand rather than being baked into a bitmap. */
+
+.service-icon {
+    display: block;
+    width: 44px;
+    height: 44px;
+    margin-bottom: 22px;
+
+    color: var(--red);
+}
+
+.service-icon svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.service-card:hover .service-icon {
+    color: var(--white);
+    transition: color 0.3s ease;
+}
+
 .service-card h3 {
     margin-top: 10px;
     margin-bottom: 18px;
