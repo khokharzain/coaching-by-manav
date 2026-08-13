@@ -7,7 +7,15 @@
         name="viewport"
         content="width=device-width, initial-scale=1.0"
     >
-    <meta name="robots" content="noindex, nofollow">
+    <!--
+        Canonical URL. Update this, the Open Graph URLs and the structured
+        data below together when the custom domain is connected, or Google
+        will index two copies of the same page.
+    -->
+    <link
+        rel="canonical"
+        href="https://coaching-by-manav-preview.khokharzain001.workers.dev/"
+    >
 
     <meta
         name="description"
@@ -69,6 +77,77 @@
     >
 
     <meta name="theme-color" content="#080808">
+
+    <!--
+        Structured data. Lets Google show the services, prices and area
+        served directly in search results rather than guessing them from
+        the page text.
+
+        Opening hours are deliberately omitted: they are held in Square,
+        and publishing a second copy here risks the two disagreeing.
+        Wrong hours in Google are worse than no hours.
+
+        priceValidUntil matches the introductory pricing on the page. Both
+        must be updated on 1 November together with Square.
+    -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "LocalBusiness",
+        "@id": "https://coaching-by-manav-preview.khokharzain001.workers.dev/#business",
+        "name": "Coaching by Manav",
+        "description": "One-on-one gym training, workout guidance and accountability coaching in Brisbane's northern suburbs.",
+        "url": "https://coaching-by-manav-preview.khokharzain001.workers.dev/",
+        "image": "https://coaching-by-manav-preview.khokharzain001.workers.dev/images/social-preview.jpg",
+        "telephone": "+61481812324",
+        "email": "manavfitness.stop@gmail.com",
+        "priceRange": "$25-$50",
+        "currenciesAccepted": "AUD",
+        "sameAs": [
+            "https://www.instagram.com/manavstraining_/"
+        ],
+        "areaServed": {
+            "@type": "AdministrativeArea",
+            "name": "Northern Brisbane, Queensland",
+            "description": "Brisbane's northern suburbs, from Caboolture in the north down to Brisbane City."
+        },
+        "makesOffer": [
+            {
+                "@type": "Offer",
+                "priceCurrency": "AUD",
+                "price": "25.00",
+                "priceValidUntil": "2026-10-31",
+                "itemOffered": {
+                    "@type": "Service",
+                    "name": "Fitness Consultation",
+                    "description": "A 30 minute one-on-one call to talk through your training and the practical next steps."
+                }
+            },
+            {
+                "@type": "Offer",
+                "priceCurrency": "AUD",
+                "price": "50.00",
+                "priceValidUntil": "2026-10-31",
+                "itemOffered": {
+                    "@type": "Service",
+                    "name": "One-on-One Gym Training",
+                    "description": "A one hour in-person session focused on technique, steady progression and building a routine."
+                }
+            },
+            {
+                "@type": "Offer",
+                "priceCurrency": "AUD",
+                "price": "25.00",
+                "priceValidUntil": "2026-10-31",
+                "itemOffered": {
+                    "@type": "Service",
+                    "name": "General Eating Habits Support",
+                    "description": "A 30 minute call about everyday eating habits alongside your training. Not a meal plan or dietary advice."
+                }
+            }
+        ]
+    }
+    </script>
 
     <link rel="stylesheet" href="css/styles.css">
 </head>

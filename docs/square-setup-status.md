@@ -12,12 +12,34 @@ up from "Remaining".
 Two things deliberately left until later. Neither blocks anything now, but
 both must be done before the site is promoted anywhere.
 
-### Remove the noindex tag
+### Connect the custom domain
 
-`index.html` line 10 carries `<meta name="robots" content="noindex, nofollow">`.
-While it is there, Google will not list the site at all. It exists so the
-preview stayed private during the build. Delete that line at launch, then
-submit the site to Google Search Console so it starts being indexed.
+The site is live and indexable. The remaining task is the domain.
+
+Manav's ABN is active, so **coachingbymanav.com.au** is eligible. Buy it
+from an Australian registrar — Cloudflare Registrar does not sell .au —
+then point the nameservers at Cloudflare and add it as a Custom Domain on
+the Worker.
+
+**When the domain is live, seven places carry the old URL.** They must
+change together or Google will index two copies of the same page:
+
+1. `index.html` — `rel="canonical"`
+2. `index.html` — `og:url`
+3. `index.html` — `og:image`
+4. `index.html` — `twitter:image`
+5. `index.html` — the JSON-LD block: `@id`, `url` and `image`
+6. `robots.txt` — the `Sitemap:` line
+7. `sitemap.xml` — the `<loc>` value
+
+Also update the website field in Square, and the live preview link at the
+top of the README.
+
+A single find and replace of
+`https://coaching-by-manav-preview.khokharzain001.workers.dev` across the
+repository covers all of it.
+
+Then submit the domain to Google Search Console and request indexing.
 
 ### Raise prices on 1 November 2026
 
@@ -44,15 +66,14 @@ the claim goes stale.
 On 1 November, update **both** Square and the pricing block in
 `index.html`. They must not disagree.
 
-### Run the test booking
+### Add opening hours to the structured data
 
-The full checklist is in "Verify with a real test booking" below. The short
-version: incognito window, book the $50 gym session, confirm it charges
-**$10** and that no slots appear inside 24 hours, then cancel and refund.
+Hours were deliberately left out of the JSON-LD. They live in Square, and
+a second copy in the page markup risks the two disagreeing — wrong hours
+in Google search results are worse than no hours.
 
-The configuration has been verified against the live data and is correct,
-but configuration and behaviour are not the same thing. Better to find a
-surprise before a client does.
+If they are added later, take them from Square rather than retyping, and
+treat Square as the single source of truth.
 
 ---
 

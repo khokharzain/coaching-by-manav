@@ -6,8 +6,9 @@ Cloudflare Workers.
 
 **Live preview:** https://coaching-by-manav-preview.khokharzain001.workers.dev
 
-> The site currently carries a `noindex, nofollow` tag while it is in preview.
-> This is removed at official launch.
+> **Live and indexable.** A custom domain is still to be connected; see
+> [`docs/square-setup-status.md`](docs/square-setup-status.md) for the
+> seven places that carry the URL and must change together.
 
 Further documentation lives in [`docs/`](docs/):
 
@@ -74,6 +75,8 @@ CoachingByManav/
 │   ├── cancellation-policy.md # Policy text for Square, and the reasoning
 │   └── square-setup-status.md # Square configuration, verified, and what remains
 ├── brand/                # Logo variants for Square. Not deployed.
+├── robots.txt            # Crawler rules and sitemap location
+├── sitemap.xml           # Single page, but tells Google where to look
 ├── wrangler.jsonc        # Cloudflare Worker configuration
 ├── .assetsignore         # Files excluded from the deployed site
 └── README.md
@@ -185,6 +188,7 @@ config and macOS artefacts. The live site therefore only receives
 - Live Square booking with per-service deposits
 - Introductory pricing with a stated future rate
 - Travel area stated for in-person sessions
+- LocalBusiness structured data, robots.txt and sitemap.xml
 
 ### Hero composition
 
@@ -297,8 +301,8 @@ once a visitor presses play and costs nothing on initial page load.
 
 **Pending**
 
-- Test booking, to confirm behaviour matches the verified configuration
-- Custom domain, then removal of the `noindex` tag
+- Custom domain, then update the seven URL references and resubmit to
+  Google Search Console
 - Photo gallery — awaiting real training photographs
 - Testimonials, with client permission
 - FAQ section

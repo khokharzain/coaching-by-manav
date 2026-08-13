@@ -1,0 +1,7 @@
+# Coaching by Manav
+# Update the Sitemap line when the custom domain is connected.
+
+User-agent: *
+Allow: /
+
+Sitemap: https://coaching-by-manav-preview.khokharzain001.workers.dev/sitemap.xml
