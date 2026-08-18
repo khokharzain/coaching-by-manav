@@ -301,15 +301,16 @@ once a visitor presses play and costs nothing on initial page load.
 
 **Pending**
 
-- Custom domain, then update the seven URL references and resubmit to
-  Google Search Console
-- Photo gallery — awaiting real training photographs
+- Custom domain: `coachingbymanav.com.au` is registered and its nameservers
+  point at Cloudflare. Once the zone is active it needs attaching to the
+  Worker as a Custom Domain, the seven URL references updated, and the
+  sitemap resubmitted to Google Search Console.
+- Raise prices on 1 November 2026, in Square and in `index.html` together
 - Testimonials, with client permission
 - FAQ section
 - Privacy notice
-- Higher-resolution hero image
-- Custom domain
-- Removal of the `noindex` tag at launch
+- Higher-resolution hero image — the current one is upscaled from a
+  portrait phone photograph
 
 ---
 
