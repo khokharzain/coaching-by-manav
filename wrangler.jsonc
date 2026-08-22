@@ -11,6 +11,18 @@
     "name": "coaching-by-manav-preview",
     "compatibility_date": "2026-08-04",
 
+    // The live domain, declared here rather than only in the dashboard so
+    // the hostnames are versioned alongside the site and survive anyone
+    // rebuilding the Worker from this repository.
+    //
+    // "custom_domain": true is what makes Cloudflare create the DNS record
+    // and issue the certificate. A plain route would only match a pattern
+    // and would still need a DNS record to exist first.
+    "routes": [
+        { "pattern": "coachingbymanav.com.au", "custom_domain": true },
+        { "pattern": "www.coachingbymanav.com.au", "custom_domain": true }
+    ],
+
     "assets": {
         // Serve everything from the repository root.
         // Files listed in .assetsignore are excluded from the upload.

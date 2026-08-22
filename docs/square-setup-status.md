@@ -9,37 +9,39 @@ up from "Remaining".
 
 ## Deferred — must happen before launch
 
-Two things deliberately left until later. Neither blocks anything now, but
-both must be done before the site is promoted anywhere.
+### Connect the custom domain — done
 
-### Connect the custom domain
+**coachingbymanav.com.au** was registered through VentraIP on 18 August
+2026 for $9.95, renewing at $22.95. Cloudflare Registrar does not sell
+`.au`, hence the outside registrar. The registrant is Manav, verified
+against ABN 41 709 251 405, so the domain is his rather than an asset
+sitting in a developer's account.
 
-The site is live and indexable. The remaining task is the domain.
+Nameservers at VentraIP point to `lochlan` and `zara.ns.cloudflare.com`.
+DNSSEC is off, which it must be while nameservers change.
 
-Manav's ABN is active, so **coachingbymanav.com.au** is eligible. Buy it
-from an Australian registrar — Cloudflare Registrar does not sell .au —
-then point the nameservers at Cloudflare and add it as a Custom Domain on
-the Worker.
+The hostnames are declared in `wrangler.jsonc` as routes with
+`custom_domain: true`, rather than only clicked into the dashboard. That
+way `npx wrangler deploy` recreates them if the Worker is ever rebuilt,
+and the live addresses are visible in the repository instead of being
+invisible account state.
 
-**When the domain is live, seven places carry the old URL.** They must
-change together or Google will index two copies of the same page:
+All seven URL references were updated in one commit — `rel="canonical"`,
+`og:url`, `og:image`, `twitter:image`, the JSON-LD `@id`/`url`/`image`,
+the `Sitemap:` line in `robots.txt`, and `<loc>` in `sitemap.xml`.
 
-1. `index.html` — `rel="canonical"`
-2. `index.html` — `og:url`
-3. `index.html` — `og:image`
-4. `index.html` — `twitter:image`
-5. `index.html` — the JSON-LD block: `@id`, `url` and `image`
-6. `robots.txt` — the `Sitemap:` line
-7. `sitemap.xml` — the `<loc>` value
+**Cloudflare injects its own block into `robots.txt`.** It appends above
+the site's own rules rather than replacing them, so the `Sitemap:` line
+survives, but the served file is not identical to the one in the
+repository. It disallows the AI *training* crawlers — GPTBot, ClaudeBot,
+CCBot, Google-Extended and others. It does not touch Googlebot, so search
+indexing is unaffected, and it does not block the user-triggered fetchers
+that AI assistants use to answer questions about a business in real time.
+Change it under **the zone → AI Crawl Control**, not by editing
+`robots.txt`.
 
-Also update the website field in Square, and the live preview link at the
-top of the README.
-
-A single find and replace of
-`https://coaching-by-manav-preview.khokharzain001.workers.dev` across the
-repository covers all of it.
-
-Then submit the domain to Google Search Console and request indexing.
+Still outstanding: submit the domain to Google Search Console and request
+indexing, and update the website field in Square.
 
 ### Raise prices on 1 November 2026
 

@@ -4,11 +4,13 @@ A responsive single-page website for a personal gym training and accountability
 coaching service, built with plain HTML, CSS and JavaScript and deployed to
 Cloudflare Workers.
 
-**Live preview:** https://coaching-by-manav-preview.khokharzain001.workers.dev
+**Live site:** https://coachingbymanav.com.au
 
-> **Live and indexable.** A custom domain is still to be connected; see
-> [`docs/square-setup-status.md`](docs/square-setup-status.md) for the
-> seven places that carry the URL and must change together.
+The Worker also answers on
+`coaching-by-manav-preview.khokharzain001.workers.dev`. That address still
+works but is not the canonical one — every URL in the markup, the sitemap
+and the structured data points at `coachingbymanav.com.au`, so search
+engines have a single address to index.
 
 Further documentation lives in [`docs/`](docs/):
 
@@ -301,10 +303,8 @@ once a visitor presses play and costs nothing on initial page load.
 
 **Pending**
 
-- Custom domain: `coachingbymanav.com.au` is registered and its nameservers
-  point at Cloudflare. Once the zone is active it needs attaching to the
-  Worker as a Custom Domain, the seven URL references updated, and the
-  sitemap resubmitted to Google Search Console.
+- Submit the domain to Google Search Console and request indexing
+- Update the website field in Square to the new domain
 - Raise prices on 1 November 2026, in Square and in `index.html` together
 - Testimonials, with client permission
 - FAQ section

@@ -1,7 +1,11 @@
 # Coaching by Manav
-# Update the Sitemap line when the custom domain is connected.
+#
+# Cloudflare appends its own managed block above this one, covering AI
+# training crawlers. It appends rather than replaces, so the Sitemap
+# line below survives. Change the managed block under
+# Cloudflare > the zone > AI Crawl Control, not here.
 
 User-agent: *
 Allow: /
 
-Sitemap: https://coaching-by-manav-preview.khokharzain001.workers.dev/sitemap.xml
+Sitemap: https://coachingbymanav.com.au/sitemap.xml
