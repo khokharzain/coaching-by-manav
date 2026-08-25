@@ -303,9 +303,12 @@ once a visitor presses play and costs nothing on initial page load.
 
 **Pending**
 
-- Submit the domain to Google Search Console and request indexing
-- Update the website field in Square to the new domain
+- Google Business Profile. Manav is a mobile trainer with a defined
+  service area, so a profile would put him in Maps and the local results
+  panel — likely worth more enquiries than anything else outstanding.
 - Raise prices on 1 November 2026, in Square and in `index.html` together
+- Opening hours in the structured data, if Square is accepted as the
+  source of truth and the two are kept in step
 - Testimonials, with client permission
 - FAQ section
 - Privacy notice

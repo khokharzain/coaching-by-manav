@@ -1,6 +1,6 @@
 # Square setup — status and next steps
 
-Last updated: 5 August 2026
+Last updated: 26 August 2026
 
 Where the Square Appointments setup got to, and exactly what is left. Pick
 up from "Remaining".
@@ -40,8 +40,23 @@ that AI assistants use to answer questions about a business in real time.
 Change it under **the zone → AI Crawl Control**, not by editing
 `robots.txt`.
 
-Still outstanding: submit the domain to Google Search Console and request
-indexing, and update the website field in Square.
+**Always Use HTTPS** is on at the zone (SSL/TLS → Edge Certificates).
+Without it a visitor typing the bare domain is served over plain HTTP
+rather than redirected, since Cloudflare does not do that by default.
+
+Google Search Console is verified as a **Domain** property, covering
+every scheme and subdomain rather than one exact prefix. Verification is
+a TXT record Google wrote through a one-time Cloudflare authorisation —
+if that record is ever deleted, verification is lost. `sitemap.xml` is
+submitted. Note that a Domain property needs the full sitemap URL, not a
+bare path.
+
+Square's website field, under **Locations → the location → Social
+media**, now carries the new domain. That link goes out in every booking
+confirmation and reminder. The account **Display business name** was
+still "Manav's fitness" and is now "Coaching by Manav"; the Branding
+profile had been correct all along, which is why the booking page looked
+right when it was checked against the live widget data.
 
 ### Raise prices on 1 November 2026
 
