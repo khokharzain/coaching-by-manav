@@ -1,364 +1,92 @@
 # Coaching by Manav
 
-A responsive single-page website for a personal gym training and accountability
-coaching service, built with plain HTML, CSS and JavaScript and deployed to
-Cloudflare Workers.
+**A responsive business website · HTML, CSS, JavaScript and Cloudflare Workers**
 
-**Live site:** https://coachingbymanav.com.au
+A website for a personal training and accountability-coaching service. It explains the offering, presents the coach and guides visitors to Square Appointments to book. I built the front end with plain HTML, CSS and JavaScript, including an interactive gallery and responsive layouts.
 
-The Worker also answers on
-`coaching-by-manav-preview.khokharzain001.workers.dev`. That address still
-works but is not the canonical one — every URL in the markup, the sitemap
-and the structured data points at `coachingbymanav.com.au`, so search
-engines have a single address to index.
+**[Visit the live website](https://coachingbymanav.com.au)** · [Architecture notes](docs/architecture.md) · [Zain's portfolio](https://github.com/khokharzain)
 
-Further documentation lives in [`docs/`](docs/):
+## What visitors can do
 
-- [`architecture.md`](docs/architecture.md) — system diagram, visitor workflow and front-end engineering decisions
+- Explore coaching services, pricing and booking information.
+- Browse a looping photo gallery with keyboard, swipe and pause controls.
+- Watch an introduction video and navigate directly between page sections.
+- Open Square Appointments to select a service and available time.
 
-- [`square-setup-status.md`](docs/square-setup-status.md) — Square
-  configuration verified against live booking data, the outstanding
-  launch items, and the refund procedure
-- [`cancellation-policy.md`](docs/cancellation-policy.md) — the policy
-  text used in Square, and why the requested terms were changed to stay
-  within the Australian Consumer Law
+## Architecture
 
----
+```mermaid
+flowchart LR
+    Visitor["Visitor browser"] --> Edge["Cloudflare Workers Static Assets"]
+    Edge --> HTML["Semantic HTML and metadata"]
+    Edge --> CSS["Responsive CSS"]
+    Edge --> JS["Gallery and navigation interactions"]
+    Visitor -->|"Booking link"| Square["Square Appointments"]
+    Square --> Booking["Appointment and payment workflow"]
+    GitHub["GitHub main branch"] --> Builds["Cloudflare Workers Builds"]
+    Builds --> Edge
+```
 
-## Why no framework
+The site serves static assets. Square handles appointment booking and payment; this repository does not implement a custom payment backend or store card details.
 
-The site is a static marketing page with one interactive element (a booking
-link). It has no user accounts, no database and no server-side logic.
+## Visitor flow
 
-Adding React, a bundler or a build step would mean shipping tens of kilobytes
-of JavaScript and introducing a dependency tree, to render content that is
-fully known at author time. Plain HTML and CSS load faster, cost nothing to
-host, and will still build in five years without a `npm install` archaeology
-session.
+```mermaid
+flowchart TD
+    Discover["Discover the service"] --> Explore["Review coaching options and pricing"]
+    Explore --> Trust["View the coach, video and gallery"]
+    Trust --> Terms["Read booking and cancellation information"]
+    Terms --> Square["Open Square Appointments"]
+    Square --> Select["Select service and availability"]
+    Select --> Book["Complete booking in Square"]
+```
 
-Appointment booking, payments and customer data are handled by
-[Square Appointments](https://squareup.com/au/en/appointments) rather than
-being rebuilt in-house. Card details are never collected by this site.
+## Engineering decisions
 
----
-
-## Tech stack
-
-| Layer | Choice |
+| Decision | Reason and implementation |
 | --- | --- |
-| Markup | HTML5, semantic sections |
-| Styling | Hand-written CSS, custom properties, CSS Grid |
-| Scripting | Vanilla JavaScript, no dependencies |
-| Hosting | Cloudflare Workers Static Assets |
-| Deploys | Cloudflare Workers Builds, triggered by pushes to `main` |
-| Bookings | Square Appointments, connected and taking deposits |
+| No application framework | The content is known at author time; browser APIs support the required interactions without a framework dependency tree |
+| One gallery scroll container | Animation frames, duplicated slides and carried fractional movement support looping motion; buttons, keyboard and swipe share the same container |
+| Visitor controls for motion | A pause control and reduced-motion preference govern automatic gallery movement |
+| Progressive scroll feedback | CSS scroll timelines are used where supported, with an animation-frame JavaScript fallback |
+| Semantic sections and sticky navigation | Anchor links, scroll margins and active-section feedback keep a long page easy to navigate |
+| Search and sharing metadata | Canonical URL, social cards, structured data, robots.txt and sitemap.xml describe the business site |
+| Documentation excluded from deployment | .assetsignore keeps Markdown, configuration and development artefacts out of the static asset upload |
 
-No build step. No dependencies. No `node_modules`.
+## Run locally
 
----
-
-## Project structure
-
-```text
-CoachingByManav/
-├── index.html            # Entire page: hero, about, coaching, booking, contact
-├── css/
-│   └── styles.css        # All styling, including responsive breakpoints
-├── js/
-│   └── script.js         # Booking button, video, gallery, scroll UI, footer year
-├── images/
-│   ├── manav-hero.jpg    # Wide hero, 2560x1280
-│   ├── manav-hero-small.jpg # Upright hero for phones, 1000x1742
-│   ├── favicon.svg       # Site icon
-│   ├── social-preview.jpg # 1200x630 Open Graph card
-│   ├── manav-intro-poster.jpg # Still frame shown before the video plays
-│   └── gallery/          # Six gallery photographs, 920px tall
-├── video/
-│   └── manav-intro.mp4   # Introduction video, H.264 720p, 15s
-├── docs/
-│   ├── cancellation-policy.md # Policy text for Square, and the reasoning
-│   └── square-setup-status.md # Square configuration, verified, and what remains
-├── brand/                # Logo variants for Square. Not deployed.
-├── robots.txt            # Crawler rules and sitemap location
-├── sitemap.xml           # Single page, but tells Google where to look
-├── wrangler.jsonc        # Cloudflare Worker configuration
-├── .assetsignore         # Files excluded from the deployed site
-└── README.md
-```
-
----
-
-## Design system
-
-Defined as custom properties at the top of `css/styles.css`:
-
-```css
---black:        #080808
---dark-grey:    #111111
---card-grey:    #171717
---border-grey:  #2a2a2a
---red:          #e50914
---dark-red:     #b80710
---white:        #ffffff
---light-grey:   #b8b8b8
-```
-
-Layout constraints:
-
-- Maximum content width `1120px`
-- Sticky header with `backdrop-filter` blur
-- Fluid typography via `clamp()` — no fixed font sizes on headings
-- Responsive breakpoints at `800px` (tablet) and `520px` (mobile)
-- `scroll-margin-top` on all `section[id]` so the sticky header does not
-  cover section headings when navigating by anchor
-
----
-
-## Running locally
-
-No build step is required. Serve the folder over HTTP:
+Requirements: Git and Python 3 (or another static HTTP server). There is no dependency installation or build step for the page.
 
 ```bash
-cd CoachingByManav
+git clone https://github.com/khokharzain/coaching-by-manav.git
+cd coaching-by-manav
 python3 -m http.server 5500
 ```
 
-Then open <http://localhost:5500>.
+Open [http://localhost:5500](http://localhost:5500).
 
-### Testing on a phone
+## Source guide
 
-Find your Mac's local network address:
-
-```bash
-ipconfig getifaddr en0
+```text
+index.html          page sections, metadata and booking link
+css/styles.css      design tokens, layout, responsive styles and motion
+js/script.js        gallery, video, navigation and scroll feedback
+images/             page imagery, gallery and social-preview assets
+video/              introduction video
+wrangler.jsonc      Cloudflare static-assets configuration
+.assetsignore       files excluded from the deployed site
+docs/               architecture, detailed notes and booking documentation
 ```
 
-Open `http://<that-ip>:5500/index.html` on the phone, on the same Wi-Fi
-network.
+## Check changes
 
-> Type the `http://` prefix explicitly. Safari will otherwise try HTTPS,
-> which `python3 -m http.server` does not support, and fail with
-> *"could not establish a secure connection"*.
+There is no automated browser test suite. For front-end changes, check narrow and wide layouts, keyboard navigation, gallery pause/resume, reduced motion, sticky-header anchor offsets and the Square booking destination. A local preview does not prove that a live appointment or payment succeeds.
 
----
+Cloudflare Workers Builds is configured to deploy from main. This documentation update changes no page code or booking configuration.
 
-## Deploying
+## More detail
 
-Deployment is automatic. Pushing to `main` triggers a Cloudflare Workers
-Build, which uploads the static assets and promotes the new version.
-
-```bash
-git add .
-git commit -m "Describe the change"
-git push
-```
-
-The build takes roughly 30 seconds. Progress is visible under
-**Workers & Pages → coaching-by-manav-preview → Deployments**.
-
-### Deploying manually
-
-If you need to push without going through GitHub:
-
-```bash
-npx wrangler deploy
-```
-
-### What gets deployed
-
-Everything in the repository root *except* the patterns listed in
-`.assetsignore` — which excludes `.git`, Markdown documentation, the Wrangler
-config and macOS artefacts. The live site therefore only receives
-`index.html`, `css/`, `js/`, `images/`, `video/`, `robots.txt` and `sitemap.xml`.
-
----
-
-## Current status
-
-**Implemented**
-
-- Responsive single-page layout, tested on desktop and mobile
-- Sticky navigation with smooth anchor scrolling
-- Hero, about, coaching services, booking and contact sections
-- Working email and Instagram links
-- Automatic footer copyright year
-- Favicon, Open Graph and Twitter card metadata
-- Fitness and medical disclaimer
-- Introduction video in the About section, click to play
-- Photo gallery that glides automatically and responds to arrows, keys, drag and swipe
-- Scroll reveal animations and scrollspy navigation
-- Scroll progress line beneath the header
-- Cancellation and rescheduling policy, shown before the point of payment
-- Live Square booking with per-service deposits
-- Introductory pricing with a stated future rate
-- Travel area stated for in-person sessions
-- LocalBusiness structured data, robots.txt and sitemap.xml
-
-### Hero composition
-
-The hero photograph is portrait, and a wide banner crop of it would cut
-Manav's head off. Two separate files are produced from the one source:
-
-- **Desktop** (`manav-hero.jpg`, 2560x1280) — a horizontal band is taken
-  around his head and torso, then the flat dark wall to his left is sampled
-  and extended to shift him into the right half of the frame, leaving clean
-  space for the headline. The join is crossfaded over 260px so there is no
-  visible seam.
-- **Narrow screens** (`manav-hero-small.jpg`, 1000x1742) — an upright crop
-  that keeps the original composition. The headline moves to the *bottom*
-  of the hero and the gradient darkens downwards, so his face and upper
-  body stay clear instead of sitting behind the type.
-
-Both are desaturated to 55% to ease the source's blue cast, so the red
-brand accents still read against it.
-
-### Gallery
-
-The strip glides on its own and can also be driven by hand.
-
-It began as a CSS `transform` animation, which was the wrong architecture
-once manual controls were needed: a CSS animation cannot be nudged by a
-button, so the two would have fought each other. It is now a real scroll
-container advanced by script one animation frame at a time, which means
-the arrows, arrow keys, trackpad, drag and swipe all move the same
-element.
-
-The same six photographs appear twice, and the scroll position wraps at
-the halfway point where the second set sits exactly where the first began.
-The loop is therefore seamless in both directions, not just forwards.
-
-Slides use a fixed height and automatic width, so portrait and landscape
-shots sit together without cropping — which is what keeps the film border
-on the gym floor photograph intact. The edges are feathered with a CSS
-mask so images enter and leave rather than being cut off.
-
-Two details make it behave rather than fight the visitor. Sub-pixel
-movement is carried between frames, because at 46px per second a single
-frame moves less than one pixel and `scrollLeft` rounds — without carrying
-the remainder the strip simply sits still. And the auto advance holds
-while a manual scroll settles, so the two are never writing to
-`scrollLeft` at the same time.
-
-It pauses on hover, drag, touch and keyboard focus, and there is an
-explicit pause button, since continuously moving content needs a stop
-control and hover does not exist on a touch screen.
-`prefers-reduced-motion` starts it paused with the arrows still working.
-
-### Scroll progress line
-
-The line under the header is driven by a scroll-driven CSS animation
-(`animation-timeline: scroll(root block)`) where the browser supports it,
-which runs off the main thread and stays smooth under load. `script.js`
-checks for that same feature and only attaches a scroll handler when it is
-missing. The fallback batches into `requestAnimationFrame` and writes only
-a `transform`, so scrolling never triggers layout.
-
-### Introductory pricing
-
-The booking section shows current prices with the rate they rise to on
-1 November, rather than a struck-through former price.
-
-That framing is deliberate. A struck-through price is a claim that the
-higher amount was previously charged. Manav has never charged it, so
-presenting it that way would be a false reference price — misleading
-conduct under the Australian Consumer Law, and a current ACCC enforcement
-priority. Stating a *future* price keeps the same anchor and the same
-deadline while remaining true.
-
-It is only true while the rise is genuinely intended, so the date and both
-price tables are recorded in `docs/square-setup-status.md`.
-
-### Service icons
-
-The coaching cards use inline SVG rather than image files. No extra
-network requests, crisp at any pixel density, and the colour is inherited
-from CSS so the icons follow the brand and respond to hover rather than
-being fixed inside a bitmap.
-
-Stock photography was considered and rejected: the gallery is entirely
-real photographs of Manav, and generic stock imagery next to it tends to
-undermine both.
-
-### Video encoding
-
-The source clip is a 46 MB iPhone recording: 1080p60 at 22.7 Mbps, carrying
-a spatial-audio track and several metadata streams alongside the stereo
-audio. It is downscaled to 720p30 and re-encoded at CRF 25, mapping only
-the stereo track, which brings it to 4.0 MB with no visible loss at the
-size it is displayed:
-
-```bash
-ffmpeg -i IMG_9346.mov \
-  -map 0:v:0 -map 0:a:0 \
-  -vf "scale=1280:720:flags=lanczos,fps=30,fade=t=out:st=14.7:d=0.5" \
-  -c:v libx264 -preset slow -crf 25 -pix_fmt yuv420p \
-  -movflags +faststart \
-  -af "afade=t=out:st=14.7:d=0.5" -c:a aac -b:a 128k -ac 2 \
-  video/manav-intro.mp4
-```
-
-The explicit `-map` flags matter: without them ffmpeg picks up the extra
-audio and data streams, producing a file some browsers refuse to play.
-
-The `<video>` element uses `preload="none"`, so the file is only fetched
-once a visitor presses play and costs nothing on initial page load.
-
-**Pending**
-
-- Google Business Profile. Manav is a mobile trainer with a defined
-  service area, so a profile would put him in Maps and the local results
-  panel — likely worth more enquiries than anything else outstanding.
-- Raise prices on 1 November 2026, in Square and in `index.html` together
-- Opening hours in the structured data, if Square is accepted as the
-  source of truth and the two are kept in step
-- Testimonials, with client permission
-- FAQ section
-- Privacy notice
-- Higher-resolution hero image — the current one is upscaled from a
-  portrait phone photograph
-
----
-
-## Booking and payments
-
-Booking runs through Square Appointments. The site links out to Square's
-booking flow rather than embedding a form, so card details are never
-collected here and there is no payment code to maintain or secure.
-
-| Service | Duration | Price | Taken at booking |
-| --- | --- | --- | --- |
-| Fitness Consultation | 30 min | $25 | 100% |
-| General Eating Habits Support | 30 min | $25 | 100% |
-| One-on-One Gym Training | 1 hr | $50 | 20% deposit |
-
-Remote services are paid in full because a phone call has no checkout at
-the end; a 20% deposit would leave a balance to chase by invoice after
-every session. In-person sessions take the deposit, because the balance
-can be collected at the gym.
-
-The button in `index.html` carries `id="square-booking-link"`, and
-`js/script.js` disables it whenever the `href` is still the `#`
-placeholder. That guard is why the button could sit safely on the live
-site for weeks before Square was ready, and why connecting it needed no
-JavaScript change — only the `href`.
-
-Full configuration, including what was verified against Square's live
-booking data and what remains, is in
-[`docs/square-setup-status.md`](docs/square-setup-status.md).
-
----
-
-## Scope
-
-This site advertises general gym training guidance, exercise support and
-accountability coaching. It deliberately avoids claiming registered personal
-training, physiotherapy, dietetic or medical credentials, and does not
-advertise injury rehabilitation, medical nutrition therapy or guaranteed
-physical results. The footer carries a disclaimer to this effect.
-
----
-
-## Licence
-
-All rights reserved. The content, branding and photography belong to
-Coaching by Manav.
+- [Architecture and interaction design](docs/architecture.md)
+- [Detailed implementation and deployment notes](docs/implementation-notes.md)
+- [Square setup status](docs/square-setup-status.md) — dated configuration notes; check the current booking provider before relying on operational details
+- [Cancellation policy notes](docs/cancellation-policy.md)
