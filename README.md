@@ -14,6 +14,8 @@ engines have a single address to index.
 
 Further documentation lives in [`docs/`](docs/):
 
+- [`architecture.md`](docs/architecture.md) — system diagram, visitor workflow and front-end engineering decisions
+
 - [`square-setup-status.md`](docs/square-setup-status.md) — Square
   configuration verified against live booking data, the outstanding
   launch items, and the refund procedure
@@ -167,7 +169,7 @@ npx wrangler deploy
 Everything in the repository root *except* the patterns listed in
 `.assetsignore` — which excludes `.git`, Markdown documentation, the Wrangler
 config and macOS artefacts. The live site therefore only receives
-`index.html`, `css/`, `js/` and `images/`.
+`index.html`, `css/`, `js/`, `images/`, `video/`, `robots.txt` and `sitemap.xml`.
 
 ---
 
